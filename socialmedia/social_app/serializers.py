@@ -1,12 +1,21 @@
 from rest_framework import serializers
 from .models import *
 
+class ReplySerializer(serializers.ModelSerializer):
+    replier = serializers.StringRelatedField(read_only=True)
+    
+    class Meta:
+        model = Reply
+        exclude = ('parent_comment',)
+
+
 class CommentSerializer(serializers.ModelSerializer):
     commentor = serializers.StringRelatedField(read_only=True)
+    replies = ReplySerializer(many=True, read_only=True)
     
     class Meta:
         model = Commment
-        exclude = ('replies_count',)
+        exclude = ('replies_count', 'parent_post',)
 
 
 class UserPostSerializer(serializers.ModelSerializer):
@@ -23,7 +32,7 @@ class LikeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Like
-        fields = '__all__'
+        exclude = ('parent_post',)
         
         
 
