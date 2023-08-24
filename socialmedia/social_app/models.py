@@ -8,4 +8,8 @@ class UserPost(models.Model):
     date_posted = models.DateTimeField(auto_now=True)
     comments_count = models.IntegerField(default=0)
     likes_count = models.IntegerField(default=0)
-    
+ 
+
+class Like(models.Model):
+    liker = models.ForeignKey(User, on_delete=models.CASCADE)
+    parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE)    
