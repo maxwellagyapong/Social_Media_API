@@ -20,7 +20,7 @@ class UserPost(models.Model):
 
 class Like(models.Model):
     liker = models.ForeignKey(User, on_delete=models.CASCADE)
-    parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE)
+    parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE, related_name='likes')
     
     def __str__(self) -> str:
         return self.liker.username + " | " + str(self.parent_post.pk)
@@ -28,7 +28,7 @@ class Like(models.Model):
     
 class Commment(models.Model):
     commentor = models.ForeignKey(User, on_delete=models.CASCADE)
-    parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE)
+    parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField(max_length=100)
     date_commented = models.DateTimeField(auto_now=True)
     replies_count = models.IntegerField(default=0)
@@ -38,7 +38,7 @@ class Commment(models.Model):
     
     
 class Reply(models.Model):
-    parent_comment = models.ForeignKey(Commment, on_delete=models.CASCADE)
+    parent_comment = models.ForeignKey(Commment, on_delete=models.CASCADE, related_name='replies')
     replier = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=100)
     date_created = models.DateTimeField(auto_now=True)
