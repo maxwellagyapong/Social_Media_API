@@ -11,6 +11,7 @@ class UserPost(models.Model):
     likes_count = models.IntegerField(default=0)
     
     class Meta:
+        verbose_name = 'Post'
         verbose_name_plural = "Posts"
     
     def __str__(self) -> str:
@@ -74,6 +75,7 @@ class GroupMember(models.Model):
     is_admin = models.BooleanField(default=False)
     
     class Meta:
+        verbose_name = 'Group Member'
         verbose_name_plural = 'Group Members'
     
     def __str__(self) -> str:
