@@ -47,4 +47,12 @@ class GroupMember(models.Model):
     member = models.ForeignKey(User, on_delete=models.CASCADE)
     group_joined = models.ForeignKey(Group, on_delete=models.CASCADE)
     date_joined = models.DateField(auto_now=True)
-    is_admin = models.BooleanField(default=False)   
+    is_admin = models.BooleanField(default=False)
+    
+    
+class Notification(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_received = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=50)
+    content = models.TextField(max_length=150)
+    viewed = models.BooleanField(default=False)   
