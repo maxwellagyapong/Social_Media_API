@@ -35,6 +35,14 @@ class LikeSerializer(serializers.ModelSerializer):
         exclude = ('parent_post',)
         
         
+class GroupMemberSerializer(serializers.ModelSerializer):
+    member = serializers.StringRelatedField(read_only=True)
+    
+    class Meta:
+        model = GroupMember
+        exclude = ('group_joined',)
+        
+        
 
 
 
