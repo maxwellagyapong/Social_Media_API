@@ -53,4 +53,8 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-        
+class NotificationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Notification
+        exclude = ('owner',)
