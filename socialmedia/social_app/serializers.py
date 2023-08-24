@@ -16,5 +16,13 @@ class LikeSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 
+class CommentSeializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Commment
+        exclude = ('replies_count',)
+        
+
+        
 
         
