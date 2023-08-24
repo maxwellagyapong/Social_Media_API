@@ -7,3 +7,14 @@ class UserPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPost
         exclude = ('comments_count', 'likes_count',)
+        
+        
+class LikeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Like
+        fields = '__all__'
+        
+
+
+        
