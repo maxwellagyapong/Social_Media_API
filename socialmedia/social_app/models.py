@@ -16,3 +16,9 @@ class Like(models.Model):
     parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE)
     
     
+class Commment(models.Model):
+    commentor = models.ForeignKey(User, on_delete=models.CASCADE)
+    parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE)
+    content = models.TextField(max_length=100)
+    date_commented = models.DateTimeField(auto_now=True)
+    replies_count = models.IntegerField(default=0)   
