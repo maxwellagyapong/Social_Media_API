@@ -33,4 +33,11 @@ class Reply(models.Model):
     
 class Follower(models.Model):
     parent_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
-    follower = models.ForeignKey(User, on_delete=models.CASCADE)   
+    follower = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    
+class Group(models.Model):
+    group_name = models.CharField(max_length=40)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_created = models.DateField(auto_now=True)
+    member_count = models.IntegerField(default=0)   
