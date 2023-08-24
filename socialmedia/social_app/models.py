@@ -28,4 +28,9 @@ class Reply(models.Model):
     parent_comment = models.ForeignKey(Commment, on_delete=models.CASCADE)
     replier = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=100)
-    date_created = models.DateTimeField(auto_now=True)   
+    date_created = models.DateTimeField(auto_now=True)
+    
+    
+class Follower(models.Model):
+    parent_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    follower = models.ForeignKey(User, on_delete=models.CASCADE)   
