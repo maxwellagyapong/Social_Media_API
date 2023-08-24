@@ -10,8 +10,11 @@ class UserPost(models.Model):
     comments_count = models.IntegerField(default=0)
     likes_count = models.IntegerField(default=0)
     
+    class Meta:
+        verbose_name_plural = "Posts"
+    
     def __str__(self) -> str:
-        return self.pk + " | " + str(self.likes_count) + " Likes | " + str(self.comments_count) + " Comments"
+        return str(self.pk) + " | " + str(self.likes_count) + " Likes | " + str(self.comments_count) + " Comments"
  
 
 class Like(models.Model):
@@ -19,7 +22,7 @@ class Like(models.Model):
     parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        return self.liker.username + " | " + self.parent_post.pk
+        return self.liker.username + " | " + str(self.parent_post.pk)
     
     
 class Commment(models.Model):
@@ -30,7 +33,7 @@ class Commment(models.Model):
     replies_count = models.IntegerField(default=0)
     
     def __str__(self) -> str:
-        return self.pk + " | " + self.commentor.username + " -> " + self.parent_post.pk
+        return str(self.pk) + " | " + self.commentor.username + " -> " + str(self.parent_post.pk)
     
     
 class Reply(models.Model):
@@ -39,8 +42,11 @@ class Reply(models.Model):
     content = models.TextField(max_length=100)
     date_created = models.DateTimeField(auto_now=True)
     
+    class Meta:
+        verbose_name_plural = 'Replies'
+    
     def __str__(self) -> str:
-        return self.pk + " | " + self.replier.username + " -> " + self.parent_comment.pk
+        return str(self.pk) + " | " + self.replier.username + " -> " + str(self.parent_comment.pk)
     
     
 class Follower(models.Model):
@@ -66,6 +72,9 @@ class GroupMember(models.Model):
     group_joined = models.ForeignKey(Group, on_delete=models.CASCADE)
     date_joined = models.DateField(auto_now=True)
     is_admin = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name_plural = 'Group Members'
     
     def __str__(self) -> str:
         return self.member.username + " -> " + self.group_joined.group_name + " | " + str(self.is_admin)
