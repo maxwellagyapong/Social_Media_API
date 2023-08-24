@@ -9,11 +9,17 @@ class UserPost(models.Model):
     date_posted = models.DateTimeField(auto_now=True)
     comments_count = models.IntegerField(default=0)
     likes_count = models.IntegerField(default=0)
+    
+    def __str__(self) -> str:
+        return self.pk + " | " + str(self.likes_count) + " Likes | " + str(self.comments_count) + " Comments"
  
 
 class Like(models.Model):
     liker = models.ForeignKey(User, on_delete=models.CASCADE)
     parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return self.liker.username + " | " + self.parent_post.pk
     
     
 class Commment(models.Model):
@@ -23,6 +29,9 @@ class Commment(models.Model):
     date_commented = models.DateTimeField(auto_now=True)
     replies_count = models.IntegerField(default=0)
     
+    def __str__(self) -> str:
+        return self.pk + " | " + self.commentor.username + " -> " + self.parent_post.pk
+    
     
 class Reply(models.Model):
     parent_comment = models.ForeignKey(Commment, on_delete=models.CASCADE)
@@ -30,10 +39,16 @@ class Reply(models.Model):
     content = models.TextField(max_length=100)
     date_created = models.DateTimeField(auto_now=True)
     
+    def __str__(self) -> str:
+        return self.pk + " | " + self.replier.username + " -> " + self.parent_comment.pk
+    
     
 class Follower(models.Model):
     parent_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
     follower = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return self.follower.username + " -> " + self.parent_user.username
     
     
 class Group(models.Model):
@@ -42,6 +57,9 @@ class Group(models.Model):
     date_created = models.DateField(auto_now=True)
     member_count = models.IntegerField(default=0)
     
+    def __str__(self) -> str:
+        return self.group_name + " | " + " | " + self.owner.username + " | " + str(self.member_count)
+    
     
 class GroupMember(models.Model):
     member = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -49,10 +67,16 @@ class GroupMember(models.Model):
     date_joined = models.DateField(auto_now=True)
     is_admin = models.BooleanField(default=False)
     
+    def __str__(self) -> str:
+        return self.member.username + " -> " + self.group_joined.group_name + " | " + str(self.is_admin)
+    
     
 class Notification(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     date_received = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=50)
     content = models.TextField(max_length=150)
-    viewed = models.BooleanField(default=False)   
+    viewed = models.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.title + " -> " + self.owner.username + " | " + str(self.date_received)
