@@ -58,3 +58,11 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         exclude = ('owner',)
+        
+        
+class FollowerSerializer(serializers.ModelSerializer):
+    follower = serializers.StringRelatedField(read_only=True)
+    
+    class Meta:
+        model = Follower
+        exclude = ('parent_user',)
