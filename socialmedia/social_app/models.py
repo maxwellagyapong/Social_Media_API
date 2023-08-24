@@ -33,7 +33,7 @@ class Commment(models.Model):
     replies_count = models.IntegerField(default=0)
     
     def __str__(self) -> str:
-        return str(self.pk) + " | " + self.commentor.username + " -> " + str(self.parent_post.pk)
+        return str(self.pk) + " | " + self.commentor.username + " -> Post " + str(self.parent_post.pk)
     
     
 class Reply(models.Model):
@@ -46,7 +46,7 @@ class Reply(models.Model):
         verbose_name_plural = 'Replies'
     
     def __str__(self) -> str:
-        return str(self.pk) + " | " + self.replier.username + " -> " + str(self.parent_comment.pk)
+        return str(self.pk) + " | " + self.replier.username + " -> Comment " + str(self.parent_comment.pk)
     
     
 class Follower(models.Model):
@@ -64,7 +64,7 @@ class Group(models.Model):
     member_count = models.IntegerField(default=0)
     
     def __str__(self) -> str:
-        return self.group_name + " | " + " | " + self.owner.username + " | " + str(self.member_count)
+        return self.group_name + " | " + " | " + self.owner.username + " | " + str(self.member_count) + " Members"
     
     
 class GroupMember(models.Model):
@@ -77,7 +77,7 @@ class GroupMember(models.Model):
         verbose_name_plural = 'Group Members'
     
     def __str__(self) -> str:
-        return self.member.username + " -> " + self.group_joined.group_name + " | " + str(self.is_admin)
+        return self.member.username + " -> Group " + self.group_joined.group_name + " | " + str(self.is_admin)
     
     
 class Notification(models.Model):
