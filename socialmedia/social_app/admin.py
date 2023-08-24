@@ -1,3 +1,11 @@
 from django.contrib import admin
+from .models import *
 
-# Register your models here.
+admin.site.register(UserPost)
+admin.site.register(Like)
+admin.site.register(Commment)
+admin.site.register(Reply)
+admin.site.register(Follower)
+admin.site.register(Group)
+admin.site.register(GroupMember)
+admin.site.register(Notification)
