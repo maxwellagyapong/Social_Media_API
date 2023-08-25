@@ -111,6 +111,7 @@ class ReplyToCommentsView(generics.ListCreateAPIView):
 class CreateGroupView(generics.CreateAPIView):
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
+    permission_classes = [IsAuthenticated]
     
     def perform_create(self, serializer):
         name = serializer.validated_data['group_name']
