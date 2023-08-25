@@ -51,7 +51,8 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = '__all__'    
-    
+        read_only_field = ["member_count"]
+        
     def validate(self, attrs):
         if attrs["group_name"] == attrs["description"]:
             raise serializers.ValidationError("Description cannot be same as name!")
