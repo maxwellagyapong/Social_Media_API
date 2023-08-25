@@ -12,4 +12,5 @@ urlpatterns = [
     path('home/groups/', GroupListView.as_view(), name='groups-list'),
     path('home/groups/<int:pk>/', GroupDetailView.as_view(), name='group-detail'),
     path('home/groups/<int:pk>/join/', JoinOrLeaveGroupView.as_view(), name='join-group'),
+    path('home/<int:pk>/share/', SharePostView.as_view(), name='share-post')
 ]
