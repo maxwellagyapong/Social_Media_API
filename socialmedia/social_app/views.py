@@ -5,7 +5,7 @@ from .serializers import *
 from .models import *
 from .permissions import IsPostOwnerOrReadOnly
 
-class CreatePostGV(generics.CreateAPIView):
+class CreatePostView(generics.CreateAPIView):
     serializer_class = UserPostSerializer
     permission_classes = [IsAuthenticated]
 
@@ -15,19 +15,19 @@ class CreatePostGV(generics.CreateAPIView):
         serializer.save(post_owner=requested_user)
         
         
-class PostListGV(generics.ListAPIView):
+class PostListView(generics.ListAPIView):
     queryset = UserPost.objects.all()
     serializer_class = UserPostSerializer
     permission_classes = [IsAuthenticated]
     
 
-class PostDetailGV(generics.RetrieveUpdateDestroyAPIView):
+class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserPost.objects.all()
     serializer_class = UserPostSerializer
     permission_classes = [IsAuthenticated, IsPostOwnerOrReadOnly]
     
 
-class LikeAndUnlikePostGV(generics.CreateAPIView):
+class LikeAndUnlikePostView(generics.CreateAPIView):
     serializer_class = LikeSerializer
     
     def get_queryset(self):
@@ -50,7 +50,7 @@ class LikeAndUnlikePostGV(generics.CreateAPIView):
             serializer.save(parent_post=post_item, liker=requested_user)
             
         
-class CreateComment(generics.ListCreateAPIView):
+class ListandCreateCommentView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     
     def get_queryset(self):
