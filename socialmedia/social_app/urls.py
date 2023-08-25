@@ -7,4 +7,5 @@ urlpatterns = [
     path('home/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('home/<int:pk>/like/', LikeAndUnlikePostView.as_view(), name='like-or-unlike-post'),
     path('home/<int:pk>/comment/', ListandCreateCommentView.as_view(), name='comments'),
+    path('comments/<int:pk>/reply/', ReplyToCommentsView.as_view(), name='reply-to-comment'),
 ]
