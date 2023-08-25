@@ -14,6 +14,10 @@ class CreatePostGV(generics.CreateAPIView):
         serializer.save(post_owner=requested_user)
         
         
-
+class PostListGV(generics.ListAPIView):
+    queryset = UserPost.objects.all()
+    serializer_class = UserPostSerializer
+    permission_classes = [IsAuthenticated]
     
+
     
