@@ -173,5 +173,5 @@ class JoinOrLeaveGroupView(generics.CreateAPIView):
             group.save()
             
             # TODO: Notify group owner/group members on new member joined group.
-            serializer.save(parent_group=group, member=requested_user, is_group_admin=False)
+            serializer.save(parent_group=group, member=requested_user)
             

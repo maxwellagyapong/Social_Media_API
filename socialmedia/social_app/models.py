@@ -81,7 +81,7 @@ class GroupMember(models.Model):
         verbose_name_plural = 'Group Members'
     
     def __str__(self) -> str:
-        return self.member.username + " -> Group " + self.group_joined.group_name + " | " + str(self.is_admin)
+        return self.member.username + " -> Group " + self.parent_group.group_name + " | " + str(self.is_group_admin)
     
     
 class Notification(models.Model):
