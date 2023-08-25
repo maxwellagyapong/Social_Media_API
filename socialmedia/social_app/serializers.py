@@ -16,6 +16,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Commment
         exclude = ('parent_post',)
+        read_only_fields = ["replies_count"]
 
 
 class LikeSerializer(serializers.ModelSerializer):
@@ -34,6 +35,7 @@ class UserPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPost
         fields = '__all__'
+        read_only_fields = ["comments_count", "likes_count"]
         
         
 class GroupMemberSerializer(serializers.ModelSerializer):
@@ -42,6 +44,7 @@ class GroupMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = GroupMember
         exclude = ('parent_group',)
+        read_only_fields = ["is_group_admin"]
         
         
 class GroupSerializer(serializers.ModelSerializer):
@@ -51,7 +54,7 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = '__all__'    
-        read_only_field = ["member_count"]
+        read_only_fields = ["member_count"]
         
     def validate(self, attrs):
         if attrs["group_name"] == attrs["description"]:
