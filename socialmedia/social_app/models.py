@@ -16,7 +16,7 @@ class UserPost(models.Model):
         verbose_name_plural = "Posts"
     
     def __str__(self) -> str:
-        return self.content + " | " + str(self.likes_count) + " Likes | " + str(self.comments_count) + " Comments"
+        return self.post_owner.username + " | " + self.content + " |  Likes: " + str(self.likes_count) + " | Comments: " + str(self.comments_count)
  
 
 class Like(models.Model):
@@ -24,7 +24,7 @@ class Like(models.Model):
     parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE, related_name='likes')
     
     def __str__(self) -> str:
-        return self.liker.username + " | " + str(self.parent_post.pk)
+        return self.liker.username + " | " + str(self.parent_post.content)
     
     
 class Commment(models.Model):
