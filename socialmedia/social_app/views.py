@@ -3,7 +3,7 @@ from rest_framework.views import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 from .models import *
-from .permissions import IsPostOwnerOrReadOnly
+from .permissions import IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly
 from rest_framework.exceptions import ValidationError
 
 class CreatePostView(generics.CreateAPIView):
@@ -121,4 +121,16 @@ class CreateGroupView(generics.CreateAPIView):
         if Group.objects.filter(group_name=name).exists():
             raise ValidationError({"Error": "A group with this name already exists!"})
         
-        serializer.save(owner=request_user)        
+        serializer.save(owner=request_user)
+        
+        
+class GroupListView(generics.ListAPIView):
+    serializer_class = GroupSerializer
+    queryset = Group.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    
+class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = GroupSerializer
+    queryset = Group.objects.all()
+    permission_classes = [IsAuthenticated, IsGroupOwnerOrReadOnly]        
