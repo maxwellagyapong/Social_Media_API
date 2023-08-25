@@ -79,9 +79,9 @@ class FollowerSerializer(serializers.ModelSerializer):
         
 class SharedPostSerializer(serializers.ModelSerializer):
     shared_by = serializers.StringRelatedField(read_only=True)
-    comments = CommentSerializer(many=True, read_only=True)
+    # comments = CommentSerializer(many=True, read_only=True)
     # likes = LikeSerializer(many=True, read_only=True)
     
     class Meta:
         model = SharedPost
-        fields = '__all__'
+        exclude = ('original_post',)
