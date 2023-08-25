@@ -5,6 +5,7 @@ from .serializers import *
 from .models import *
 from .permissions import IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly
 from rest_framework.exceptions import ValidationError
+from rest_framework import viewsets
 
 class CreatePostView(generics.CreateAPIView):
     serializer_class = UserPostSerializer
@@ -147,6 +148,7 @@ class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
     
 class JoinOrLeaveGroupView(generics.CreateAPIView):
     serializer_class = GroupMemberSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return GroupMember.objects.all()
@@ -179,6 +181,7 @@ class JoinOrLeaveGroupView(generics.CreateAPIView):
 class SharePostView(generics.CreateAPIView):
     serializer_class = SharedPostSerializer
     queryset = SharedPost.objects.all()
+    permission_classes = [IsAuthenticated]
     
     def perform_create(self, serializer):
         pk = self.kwargs["pk"]
@@ -188,3 +191,7 @@ class SharePostView(generics.CreateAPIView):
         serializer.save(original_post=original_post, shared_by=shared_by)
         
         
+class SharePostViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = SharedPost.objects.all()
+    serializer_class = SharedPostSerializer
+    permission_classes = [IsAuthenticated]
