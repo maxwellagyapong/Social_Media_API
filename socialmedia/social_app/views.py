@@ -175,3 +175,16 @@ class JoinOrLeaveGroupView(generics.CreateAPIView):
             # TODO: Notify group owner/group members on new member joined group.
             serializer.save(parent_group=group, member=requested_user)
             
+
+class SharePostView(generics.CreateAPIView):
+    serializer_class = SharedPostSerializer
+    queryset = SharedPost.objects.all()
+    
+    def perform_create(self, serializer):
+        pk = self.kwargs["pk"]
+        original_post = UserPost.objects.get(pk=pk)
+        shared_by = self.request.user
+        
+        serializer.save(original_post=original_post, shared_by=shared_by)
+        
+        
