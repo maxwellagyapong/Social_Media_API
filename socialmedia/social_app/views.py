@@ -3,6 +3,7 @@ from rest_framework.views import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 from .models import *
+from .permissions import IsPostOwnerOrReadOnly
 
 class CreatePostGV(generics.CreateAPIView):
     serializer_class = UserPostSerializer
@@ -23,4 +24,4 @@ class PostListGV(generics.ListAPIView):
 class PostDetailGV(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserPost.objects.all()
     serializer_class = UserPostSerializer
-    permission_classes = [IsAuthenticated]    
+    permission_classes = [IsAuthenticated, IsPostOwnerOrReadOnly]    
