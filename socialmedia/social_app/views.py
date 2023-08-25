@@ -40,7 +40,7 @@ class LikeAndUnlikePostView(generics.CreateAPIView):
         pk = self.kwargs['pk']
         try:
             post_item = UserPost.objects.get(pk=pk)
-        except Commment.DoesNotExist:
+        except UserPost.DoesNotExist:
             post_item = None
             if post_item == None:
                 raise ValidationError({"Error": "You cannot reply to a non-existing comment!"})
@@ -55,6 +55,8 @@ class LikeAndUnlikePostView(generics.CreateAPIView):
         else:
             post_item.likes_count += 1
             post_item.save()
+            
+            # TODO: Notify post owner on like
             serializer.save(parent_post=post_item, liker=requested_user)
             
         
@@ -71,13 +73,15 @@ class ListandCreateCommentView(generics.ListCreateAPIView):
         pk = self.kwargs['pk']
         try:
             post_item = UserPost.objects.get(pk=pk)
-        except Commment.DoesNotExist:
+        except UserPost.DoesNotExist:
             post_item = None
             if post_item == None:
                 raise ValidationError({"Error": "You cannot reply to a non-existing comment!"})
         
         post_item.comments_count += 1
         post_item.save()
+        
+        # TODO: Notify post owner on new comment
         
         requested_user = self.request.user  
         
@@ -106,6 +110,8 @@ class ReplyToCommentsView(generics.ListCreateAPIView):
         
         request_user = self.request.user
         
+        # TODO: Notify commentor on new reply
+        
         serializer.save(parent_comment=comment_item, replier=request_user)
         
         
@@ -120,6 +126,9 @@ class CreateGroupView(generics.CreateAPIView):
         
         if Group.objects.filter(group_name=name).exists():
             raise ValidationError({"Error": "A group with this name already exists!"})
+        
+        # TODO: Create a new GroupMember object after creating a group. Thus you become
+        # the first group member and also an admin. 
         
         serializer.save(owner=request_user)
         
@@ -136,4 +145,32 @@ class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsGroupOwnerOrReadOnly]
     
     
+class JoinAndLeaveGroupView(generics.CreateAPIView):
+    serializer_class = GroupMemberSerializer
+    
+    def get_queryset(self):
+        return GroupMember.objects.all()
+    
+    def perform_create(self, serializer):
+        pk = self.kwargs['pk']
         
+        try:
+            group = Group.objects.get(pk=pk)
+        except Group.DoesNotExist:
+            group = None
+            if group == None:
+                raise ValidationError({"Error": "You cannot reply to a non-existing comment!"})
+            
+        requested_user = self.request.user
+        
+        group_member = GroupMember.objects.filter(parent_group=group, member=requested_user)
+        if group_member.exists():
+            group.member_count -= 1
+            group.save()
+            group_member.delete()
+        else:
+            group.member_count += 1
+            group.save()
+            
+            # TODO: Notify group owner/group members on new member joined group.
+            serializer.save(parent_group=group, member=requested_user)

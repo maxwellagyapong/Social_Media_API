@@ -72,7 +72,7 @@ class Group(models.Model):
     
 class GroupMember(models.Model):
     member = models.ForeignKey(User, on_delete=models.CASCADE)
-    group_joined = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='group_members')
+    parent_group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='group_members')
     date_joined = models.DateField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
     
