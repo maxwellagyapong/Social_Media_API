@@ -11,6 +11,9 @@ class CreatePostGV(generics.CreateAPIView):
     def perform_create(self, serializer):
         requested_user = self.request.user
         
-        serializer.save(post_owner=requested_user)       
+        serializer.save(post_owner=requested_user)
+        
+        
+
     
     
