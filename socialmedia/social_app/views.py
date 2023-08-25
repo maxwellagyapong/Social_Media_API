@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 from .models import *
 from .permissions import IsPostOwnerOrReadOnly
+from rest_framework.exceptions import ValidationError
 
 class CreatePostView(generics.CreateAPIView):
     serializer_class = UserPostSerializer
@@ -42,8 +43,8 @@ class LikeAndUnlikePostView(generics.CreateAPIView):
         except Commment.DoesNotExist:
             post_item = None
             if post_item == None:
-                return Response({"Error": "You cannot like a non-existing post!"},
-                                status=status.HTTP_400_BAD_REQUEST)
+                raise ValidationError({"Error": "You cannot reply to a non-existing comment!"})
+            
         requested_user = self.request.user
         
         user_like = Like.objects.filter(parent_post=post_item, liker=requested_user)
@@ -73,8 +74,7 @@ class ListandCreateCommentView(generics.ListCreateAPIView):
         except Commment.DoesNotExist:
             post_item = None
             if post_item == None:
-                return Response({"Error": "You cannot comment on a non-existing post!"},
-                                status=status.HTTP_400_BAD_REQUEST)
+                raise ValidationError({"Error": "You cannot reply to a non-existing comment!"})
         
         post_item.comments_count += 1
         post_item.save()
@@ -99,12 +99,14 @@ class ReplyToCommentsView(generics.ListCreateAPIView):
         except Commment.DoesNotExist:
             comment_item = None
             if comment_item == None:
-                return Response({"Error": "You cannot reply to a non-existing comment"},
-                                status=status.HTTP_400_BAD_REQUEST)
+                raise ValidationError({"Error": "You cannot reply to a non-existing comment!"})
                 
         comment_item.replies_count += 1
         comment_item.save()
         
         request_user = self.request.user
         
-        serializer.save(parent_comment=comment_item, replier=request_user)    
+        serializer.save(parent_comment=comment_item, replier=request_user)
+        
+
+    
