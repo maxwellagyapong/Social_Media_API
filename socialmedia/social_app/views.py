@@ -133,4 +133,7 @@ class GroupListView(generics.ListAPIView):
 class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
-    permission_classes = [IsAuthenticated, IsGroupOwnerOrReadOnly]        
+    permission_classes = [IsAuthenticated, IsGroupOwnerOrReadOnly]
+    
+    
+        

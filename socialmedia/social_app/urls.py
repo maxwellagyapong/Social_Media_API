@@ -8,5 +8,7 @@ urlpatterns = [
     path('home/<int:pk>/like/', LikeAndUnlikePostView.as_view(), name='like-or-unlike-post'),
     path('home/<int:pk>/comment/', ListandCreateCommentView.as_view(), name='comments'),
     path('home/comments/<int:pk>/reply/', ReplyToCommentsView.as_view(), name='reply-to-comment'),
-    path('home/create-group/', CreateGroupView.as_view(), name='create-group')
+    path('home/create-group/', CreateGroupView.as_view(), name='create-group'),
+    path('home/groups/', GroupListView.as_view(), name='groups-list'),
+    path('home/groups/<int:pk>/', GroupDetailView.as_view(), name='group-detail'),
 ]
