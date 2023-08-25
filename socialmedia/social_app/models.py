@@ -7,6 +7,7 @@ class UserPost(models.Model):
     content = models.TextField(max_length=250)
     media_file = models.FileField(upload_to='media/posts-media', blank=True, null=True)
     date_posted = models.DateTimeField(auto_now=True)
+    date_updated = models.DateTimeField(auto_now_add=True)
     comments_count = models.IntegerField(default=0)
     likes_count = models.IntegerField(default=0)
     
