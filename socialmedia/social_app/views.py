@@ -42,6 +42,7 @@ class LikeAndUnlikePostGV(generics.CreateAPIView):
         user_like = Like.objects.filter(parent_post=post_item, liker=requested_user)
         if user_like.exists():
             post_item.likes_count -= 1
+            post_item.save()
             user_like.delete()
         else:
             post_item.likes_count += 1
