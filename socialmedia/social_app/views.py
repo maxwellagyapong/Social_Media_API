@@ -28,7 +28,7 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsPostOwnerOrReadOnly]
     
 
-class LikeAndUnlikePostView(generics.CreateAPIView):
+class LikeOrUnlikePostView(generics.CreateAPIView):
     serializer_class = LikeSerializer
     permission_classes = [IsAuthenticated]
     
@@ -145,7 +145,7 @@ class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsGroupOwnerOrReadOnly]
     
     
-class JoinAndLeaveGroupView(generics.CreateAPIView):
+class JoinOrLeaveGroupView(generics.CreateAPIView):
     serializer_class = GroupMemberSerializer
     
     def get_queryset(self):
@@ -174,3 +174,5 @@ class JoinAndLeaveGroupView(generics.CreateAPIView):
             
             # TODO: Notify group owner/group members on new member joined group.
             serializer.save(parent_group=group, member=requested_user)
+            
+            
