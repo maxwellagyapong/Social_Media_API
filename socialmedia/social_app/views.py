@@ -108,5 +108,3 @@ class ReplyToCommentsView(generics.ListCreateAPIView):
         
         serializer.save(parent_comment=comment_item, replier=request_user)
         
-
-    

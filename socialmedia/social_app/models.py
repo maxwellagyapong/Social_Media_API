@@ -60,7 +60,8 @@ class Follower(models.Model):
     
     
 class Group(models.Model):
-    group_name = models.CharField(max_length=40)
+    group_name = models.CharField(max_length=40, unique=True)
+    description = models.CharField(max_length=150)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     date_created = models.DateField(auto_now=True)
     member_count = models.IntegerField(default=0)
