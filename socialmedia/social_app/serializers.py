@@ -45,6 +45,7 @@ class GroupMemberSerializer(serializers.ModelSerializer):
         model = GroupMember
         exclude = ('parent_group',)
         read_only_fields = ["is_group_admin"]
+
         
 def group_name_length(value):
     if len(value) < 2:
