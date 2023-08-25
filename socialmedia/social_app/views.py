@@ -130,7 +130,7 @@ class CreateGroupView(generics.CreateAPIView):
         # TODO: Create a new GroupMember object after creating a group. Thus you become
         # the first group member and also an admin. 
         
-        serializer.save(owner=request_user)
+        serializer.save(owner=request_user, member_count=0)
         
         
 class GroupListView(generics.ListAPIView):
@@ -173,6 +173,6 @@ class JoinOrLeaveGroupView(generics.CreateAPIView):
             group.save()
             
             # TODO: Notify group owner/group members on new member joined group.
-            serializer.save(parent_group=group, member=requested_user)
+            serializer.save(parent_group=group, member=requested_user, is_group_admin=False)
             
-            
+

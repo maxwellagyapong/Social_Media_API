@@ -41,7 +41,7 @@ class GroupMemberSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = GroupMember
-        exclude = ('group_joined',)
+        exclude = ('parent_group',)
         
         
 class GroupSerializer(serializers.ModelSerializer):

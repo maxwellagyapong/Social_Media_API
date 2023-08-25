@@ -74,7 +74,7 @@ class GroupMember(models.Model):
     member = models.ForeignKey(User, on_delete=models.CASCADE)
     parent_group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='group_members')
     date_joined = models.DateField(auto_now_add=True)
-    is_admin = models.BooleanField(default=False)
+    is_group_admin = models.BooleanField(default=False)
     
     class Meta:
         verbose_name = 'Group Member'
@@ -93,3 +93,9 @@ class Notification(models.Model):
     
     def __str__(self) -> str:
         return self.title + " -> " + self.owner.username + " | " + str(self.date_received)
+    
+    
+class SharedPost(models.Model):
+    original_post = models.ForeignKey(UserPost, on_delete=models.CASCADE)
+    shared_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    time_shared = models.DateTimeField(auto_now_add=True)
