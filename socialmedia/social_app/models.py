@@ -16,7 +16,7 @@ class UserPost(models.Model):
         verbose_name_plural = "Posts"
     
     def __str__(self) -> str:
-        return str(self.pk) + " | " + str(self.likes_count) + " Likes | " + str(self.comments_count) + " Comments"
+        return self.content + " | " + str(self.likes_count) + " Likes | " + str(self.comments_count) + " Comments"
  
 
 class Like(models.Model):

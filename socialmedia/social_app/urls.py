@@ -1,5 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('shared-posts', SharePostViewSet, basename='view-shared-posts')
 
 urlpatterns = [
     path('home/', PostListView.as_view(), name='home'),
@@ -12,5 +16,6 @@ urlpatterns = [
     path('home/groups/', GroupListView.as_view(), name='groups-list'),
     path('home/groups/<int:pk>/', GroupDetailView.as_view(), name='group-detail'),
     path('home/groups/<int:pk>/join/', JoinOrLeaveGroupView.as_view(), name='join-group'),
-    path('home/<int:pk>/share/', SharePostView.as_view(), name='share-post')
+    path('home/<int:pk>/share/', SharePostView.as_view(), name='share-post'),
+    path('', include(router.urls)),
 ]

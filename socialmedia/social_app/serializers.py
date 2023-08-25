@@ -45,7 +45,7 @@ class GroupMemberSerializer(serializers.ModelSerializer):
         model = GroupMember
         exclude = ('parent_group',)
         read_only_fields = ["is_group_admin"]
-        
+                   
         
 class GroupSerializer(serializers.ModelSerializer):
     owner = serializers.StringRelatedField(read_only=True) 
@@ -79,9 +79,10 @@ class FollowerSerializer(serializers.ModelSerializer):
         
 class SharedPostSerializer(serializers.ModelSerializer):
     shared_by = serializers.StringRelatedField(read_only=True)
+    original_post = serializers.StringRelatedField(read_only=True)
     # comments = CommentSerializer(many=True, read_only=True)
     # likes = LikeSerializer(many=True, read_only=True)
     
     class Meta:
         model = SharedPost
-        exclude = ('original_post',)
+        fields = '__all__'
