@@ -20,4 +20,7 @@ class PostListGV(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     
 
-    
+class PostDetailGV(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserPost.objects.all()
+    serializer_class = UserPostSerializer
+    permission_classes = [IsAuthenticated]    
