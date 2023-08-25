@@ -50,4 +50,19 @@ class LikeAndUnlikePostGV(generics.CreateAPIView):
             serializer.save(parent_post=post_item, liker=requested_user)
             
         
-            
+class CreateComment(generics.ListCreateAPIView):
+    serializer_class = CommentSerializer
+    
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Commment.objects.filter(parent_post=pk)
+    
+    def perform_create(self, serializer):
+        
+        pk = self.kwargs['pk']
+        post_item = UserPost.objects.get(pk=pk)
+        post_item.comments_count += 1
+        
+        requested_user = self.request.user  
+        
+        serializer.save(parent_post=post_item, commentor=requested_user)      
