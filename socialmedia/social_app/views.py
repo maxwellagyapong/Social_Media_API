@@ -62,6 +62,7 @@ class ListandCreateCommentView(generics.ListCreateAPIView):
         pk = self.kwargs['pk']
         post_item = UserPost.objects.get(pk=pk)
         post_item.comments_count += 1
+        post_item.save()
         
         requested_user = self.request.user  
         
