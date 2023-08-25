@@ -37,7 +37,13 @@ class LikeAndUnlikePostView(generics.CreateAPIView):
     def perform_create(self, serializer):
         
         pk = self.kwargs['pk']
-        post_item = UserPost.objects.get(pk=pk)
+        try:
+            post_item = UserPost.objects.get(pk=pk)
+        except Commment.DoesNotExist:
+            post_item = None
+            if post_item == None:
+                return Response({"Error": "You cannot like a non-existing post!"},
+                                status=status.HTTP_400_BAD_REQUEST)
         requested_user = self.request.user
         
         user_like = Like.objects.filter(parent_post=post_item, liker=requested_user)
@@ -62,7 +68,14 @@ class ListandCreateCommentView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         
         pk = self.kwargs['pk']
-        post_item = UserPost.objects.get(pk=pk)
+        try:
+            post_item = UserPost.objects.get(pk=pk)
+        except Commment.DoesNotExist:
+            post_item = None
+            if post_item == None:
+                return Response({"Error": "You cannot comment on a non-existing post!"},
+                                status=status.HTTP_400_BAD_REQUEST)
+        
         post_item.comments_count += 1
         post_item.save()
         
@@ -81,7 +94,14 @@ class ReplyToCommentsView(generics.ListCreateAPIView):
     
     def perform_create(self, serializer):
         pk = self.kwargs['pk']
-        comment_item = Commment.objects.get(pk=pk)
+        try:
+            comment_item = Commment.objects.get(pk=pk)
+        except Commment.DoesNotExist:
+            comment_item = None
+            if comment_item == None:
+                return Response({"Error": "You cannot reply to a non-existing comment"},
+                                status=status.HTTP_400_BAD_REQUEST)
+                
         comment_item.replies_count += 1
         comment_item.save()
         
