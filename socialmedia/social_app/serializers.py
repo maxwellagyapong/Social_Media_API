@@ -45,10 +45,21 @@ class GroupMemberSerializer(serializers.ModelSerializer):
         model = GroupMember
         exclude = ('parent_group',)
         read_only_fields = ["is_group_admin"]
-                   
+        
+def group_name_length(value):
+    if len(value) < 2:
+        raise serializers.ValidationError("Group name is too short!")
+    return value
+
+def description_length(value):
+    if len(value) < 10:
+        raise serializers.ValidationError("Description must have at least 10 characters!")
+    return value                      
         
 class GroupSerializer(serializers.ModelSerializer):
-    owner = serializers.StringRelatedField(read_only=True) 
+    owner = serializers.StringRelatedField(read_only=True)
+    group_name = serializers.CharField(validators=[group_name_length])
+    description = serializers.CharField(validators=[description_length]) 
     # group_member = GroupMemberSerializer(many=True, read_only=True)
     
     class Meta:
