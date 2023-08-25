@@ -141,6 +141,8 @@ class GroupListView(generics.ListAPIView):
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['group_name', 'description']
     
     
 class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
