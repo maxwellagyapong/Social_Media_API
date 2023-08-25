@@ -29,6 +29,7 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class LikeAndUnlikePostView(generics.CreateAPIView):
     serializer_class = LikeSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return Like.objects.all()
@@ -52,6 +53,7 @@ class LikeAndUnlikePostView(generics.CreateAPIView):
         
 class ListandCreateCommentView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -66,4 +68,23 @@ class ListandCreateCommentView(generics.ListCreateAPIView):
         
         requested_user = self.request.user  
         
-        serializer.save(parent_post=post_item, commentor=requested_user)      
+        serializer.save(parent_post=post_item, commentor=requested_user)
+        
+
+class ReplyToCommentsView(generics.ListCreateAPIView):
+    serializer_class = ReplySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Reply.objects.filter(parent_comment=pk)
+    
+    def perform_create(self, serializer):
+        pk = self.kwargs['pk']
+        comment_item = Commment.objects.get(pk=pk)
+        comment_item.replies_count += 1
+        comment_item.save()
+        
+        request_user = self.request.user
+        
+        serializer.save(parent_comment=comment_item, replier=request_user)    
