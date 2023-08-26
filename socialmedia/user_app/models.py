@@ -40,26 +40,24 @@ class User(AbstractBaseUser):
     # =====================================
     # General fields
     # =====================================
-    first_name                      = models.CharField(max_length=20, null=True, blank=True)
-    last_name                       = models.CharField(max_length=200)
-    # userId                          = models.CharField(max_length=13, unique=True, blank=True, null=True)
-    email                           = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=20, null=True, blank=True)
+    last_name = models.CharField(max_length=200)
+    # userId = models.CharField(max_length=13, unique=True, blank=True, null=True)
+    email = models.EmailField(unique=True)
     followers_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)            
 
         
     # =====================================
-    # General default stuff
+    # General default fields
     # =====================================
-    is_active                       = models.BooleanField(default=True)
-    date_joined                     = models.DateTimeField(
-        verbose_name='date joined', auto_now_add=True)
-    last_login                      = models.DateTimeField(
-        verbose_name='last joined', auto_now=True)
-    is_admin                        = models.BooleanField(default=False)
-    is_staff                        = models.BooleanField(default=False)
-    is_superuser                    = models.BooleanField(default=False)
-    hide_email                      = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name='last joined', auto_now=True)
+    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    hide_email = models.BooleanField(default=True)
 
     objects = MyAccountManager()
 
