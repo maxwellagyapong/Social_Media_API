@@ -37,52 +37,54 @@ class MyAccountManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-	# =====================================
-	# General fields
-	# =====================================
-	first_name                      = models.CharField(max_length=20, null=True, blank=True)
-	last_name                       = models.CharField(max_length=200)
-	# userId                          = models.CharField(max_length=13, unique=True, blank=True, null=True)
-	email                           = models.EmailField(unique=True)
-	
-		
-	# =====================================
-	# General default stuff
-	# =====================================
-	is_active                       = models.BooleanField(default=True)
-	date_joined                     = models.DateTimeField(
-		verbose_name='date joined', auto_now_add=True)
-	last_login                      = models.DateTimeField(
-		verbose_name='last joined', auto_now=True)
-	is_admin                        = models.BooleanField(default=False)
-	is_staff                        = models.BooleanField(default=False)
-	is_superuser                    = models.BooleanField(default=False)
-	hide_email                      = models.BooleanField(default=True)
+    # =====================================
+    # General fields
+    # =====================================
+    first_name                      = models.CharField(max_length=20, null=True, blank=True)
+    last_name                       = models.CharField(max_length=200)
+    # userId                          = models.CharField(max_length=13, unique=True, blank=True, null=True)
+    email                           = models.EmailField(unique=True)
+    followers_count = models.IntegerField(default=0)
+    following_count = models.IntegerField(default=0)            
 
-	objects = MyAccountManager()
+        
+    # =====================================
+    # General default stuff
+    # =====================================
+    is_active                       = models.BooleanField(default=True)
+    date_joined                     = models.DateTimeField(
+        verbose_name='date joined', auto_now_add=True)
+    last_login                      = models.DateTimeField(
+        verbose_name='last joined', auto_now=True)
+    is_admin                        = models.BooleanField(default=False)
+    is_staff                        = models.BooleanField(default=False)
+    is_superuser                    = models.BooleanField(default=False)
+    hide_email                      = models.BooleanField(default=True)
 
-	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = ['first_name', 'last_name']
+    objects = MyAccountManager()
 
-	class Meta:
-		verbose_name_plural = "Users"
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
-	def __str__(self):
-		return f"{self.first_name} {self.last_name}"
+    class Meta:
+        verbose_name_plural = "Users"
 
-	def has_perm(self, perm, obj=None):
-		return self.is_admin
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
-	def has_module_perms(self, app_label):
-		return True
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+    def has_module_perms(self, app_label):
+        return True
 
 
 
-# def generate_userId():
-# 	getNum = ''.join(random.choice('0123456789') for i in range(10))
-# 	getAlpha = ''.join(random.choice('ABCEFGHIJKLMNOPQRSTUVWXYZ') for i in range(2))
-# 	getUserId = getAlpha + getNum
+    # def generate_userId():
+    # 	getNum = ''.join(random.choice('0123456789') for i in range(10))
+    # 	getAlpha = ''.join(random.choice('ABCEFGHIJKLMNOPQRSTUVWXYZ') for i in range(2))
+    # 	getUserId = getAlpha + getNum
 
-# 	while User.objects.filter(userId=getUserId).exists():
-# 		generate_userId()
-# 	return getUserId
+    # 	while User.objects.filter(userId=getUserId).exists():
+    # 		generate_userId()
+    # 	return getUserId
