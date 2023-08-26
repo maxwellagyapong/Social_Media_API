@@ -13,3 +13,12 @@ class UserSerializer(serializers.ModelSerializer):
 		model= models.User
 		fields = ['first_name', 'last_name', 'email', 'password', 'password2']
 		extra_kwargs = {'password': {'write_only': True}}
+  
+  
+class UserLoginSerializer(serializers.ModelSerializer):
+	password = serializers.CharField(max_length=65, min_length=8)
+	email = serializers.EmailField(max_length=255, min_length=4)
+
+	class Meta:
+		model = models.User
+		fields = ["email", "password"]
