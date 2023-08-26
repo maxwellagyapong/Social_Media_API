@@ -7,7 +7,7 @@ from .permissions import IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets
 from rest_framework import filters
-from .paginations import PostListPagination
+from .paginations import PostListPagination, CommentListPagination
 
 class CreatePostView(generics.CreateAPIView):
     serializer_class = UserPostSerializer
@@ -69,6 +69,7 @@ class LikeOrUnlikePostView(generics.CreateAPIView):
 class ListandCreateCommentView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CommentListPagination
     
     def get_queryset(self):
         pk = self.kwargs['pk']
