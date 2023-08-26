@@ -18,4 +18,5 @@ urlpatterns = [
     path('groups/<int:pk>/join/', JoinOrLeaveGroupView.as_view(), name='join-group'),
     path('<int:pk>/share/', SharePostView.as_view(), name='share-post'),
     path('', include(router.urls)),
+    path('<int:pk>/likers/', LikeListView.as_view(), name='likes-list'),
 ]

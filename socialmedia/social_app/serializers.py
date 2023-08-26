@@ -25,7 +25,7 @@ class LikeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Like
-        exclude = ('parent_post',)
+        exclude = ('parent_post', 'id')
 
 
 class UserPostSerializer(serializers.ModelSerializer):
