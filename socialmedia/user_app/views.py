@@ -1,12 +1,14 @@
 from .models import * 
 from .serializers import *
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import generics
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib import auth
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
+from 
 
 User = get_user_model()
 
@@ -100,3 +102,14 @@ class LoginView(generics.GenericAPIView):
 			'status': status.HTTP_404_NOT_FOUND,
 			'message': 'Please enter the correct email and password!'
 		}, status=status.HTTP_404_NOT_FOUND)
+
+
+class LogoutView(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def get(self, request):
+		logout(request)
+		return Response({
+			"status":status.HTTP_200_OK,
+			"message":"Logged out"
+			}, status=status.HTTP_200_OK)
