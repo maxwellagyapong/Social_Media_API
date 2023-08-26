@@ -3,7 +3,7 @@ from .views import *
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('shared-posts', SharePostViewSet, basename='view-shared-posts')
+router.register('shared-posts', SharedPostViewSet, basename='view-shared-posts')
 
 urlpatterns = [
     path('home/', PostListView.as_view(), name='home'),

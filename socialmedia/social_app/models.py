@@ -92,7 +92,7 @@ class Notification(models.Model):
     viewed = models.BooleanField(default=False)
     
     def __str__(self) -> str:
-        return self.title + " -> " + self.owner.username + " | " + str(self.date_received)
+        return self.title + " | " + str(self.date_received)
     
     
 class SharedPost(models.Model):

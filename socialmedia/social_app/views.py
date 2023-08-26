@@ -23,7 +23,7 @@ class PostListView(generics.ListAPIView):
     serializer_class = UserPostSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['post_owner', 'content']
+    search_fields = ['post_owner__username', 'content']
     
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -80,7 +80,7 @@ class ListandCreateCommentView(generics.ListCreateAPIView):
         except UserPost.DoesNotExist:
             post_item = None
             if post_item == None:
-                raise ValidationError({"Error": "You cannot reply to a non-existing comment!"})
+                raise ValidationError({"Error": "You cannot like a non-existing post!"})
         
         post_item.comments_count += 1
         post_item.save()
@@ -132,7 +132,7 @@ class CreateGroupView(generics.CreateAPIView):
             raise ValidationError({"Error": "A group with this name already exists!"})
         
         # TODO: Create a new GroupMember object after creating a group. Thus you become
-        # the first group member and also an admin. 
+        # the first group member and also an admin. And set member count to 1.
         
         serializer.save(owner=request_user, member_count=0)
         
@@ -166,7 +166,7 @@ class JoinOrLeaveGroupView(generics.CreateAPIView):
         except Group.DoesNotExist:
             group = None
             if group == None:
-                raise ValidationError({"Error": "You cannot reply to a non-existing comment!"})
+                raise ValidationError({"Error": "You cannot join a non-existing group!"})
             
         requested_user = self.request.user
         
@@ -190,13 +190,18 @@ class SharePostView(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         pk = self.kwargs["pk"]
-        original_post = UserPost.objects.get(pk=pk)
+        try:
+            original_post = UserPost.objects.get(pk=pk)
+        except Group.DoesNotExist:
+            original_post = None
+            if original_post == None:
+                raise ValidationError({"Error": "You cannot share a non-existing post!"})
         shared_by = self.request.user
         
         serializer.save(original_post=original_post, shared_by=shared_by)
         
         
-class SharePostViewSet(viewsets.ReadOnlyModelViewSet):
+class SharedPostViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SharedPost.objects.all()
     serializer_class = SharedPostSerializer
     permission_classes = [IsAuthenticated]
