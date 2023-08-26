@@ -7,6 +7,7 @@ from .permissions import IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets
 from rest_framework import filters
+from .paginations import PostListPagination
 
 class CreatePostView(generics.CreateAPIView):
     serializer_class = UserPostSerializer
@@ -22,6 +23,7 @@ class PostListView(generics.ListAPIView):
     queryset = UserPost.objects.all()
     serializer_class = UserPostSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = PostListPagination
     filter_backends = [filters.SearchFilter]
     search_fields = ['post_owner__username', 'content']
     
