@@ -5,6 +5,8 @@ from rest_framework import generics
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.response import Response
+from django.contrib import auth
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
@@ -70,3 +72,31 @@ class RegistrationView(generics.CreateAPIView):
 					"status": status.HTTP_500_INTERNAL_SERVER_ERROR,
 					"message": "Something went wrong. " + str(e),
 				}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
+class LoginView(generics.GenericAPIView):
+	serializer_class = UserLoginSerializer
+	permission_classes = [AllowAny]
+
+	def post(self, request):
+		data = UserLoginSerializer(data=request.data)
+		data.is_valid(raise_exception=True)
+		validated_data = data.data 
+
+		email = validated_data["email"]
+		password = validated_data["password"]
+		user = auth.authenticate(email=email, password=password)
+		if user:
+			token = RefreshToken.for_user(user).access_token
+	
+			data = {
+                'message': 'Login Successful',
+				'status': status.HTTP_200_OK,
+				'token': str(token),
+			}
+			return Response(data, status=status.HTTP_200_OK)
+			
+		return Response({
+			'status': status.HTTP_404_NOT_FOUND,
+			'message': 'Please enter the correct email and password!'
+		}, status=status.HTTP_404_NOT_FOUND)
