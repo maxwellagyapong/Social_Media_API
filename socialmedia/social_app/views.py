@@ -7,7 +7,8 @@ from .permissions import IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets
 from rest_framework import filters
-from .paginations import PostListPagination, CommentListPagination, ReplyListPagination
+from .paginations import (PostListPagination, CommentListPagination, 
+                          ReplyListPagination, GroupListPagination)
 
 class CreatePostView(generics.CreateAPIView):
     serializer_class = UserPostSerializer
@@ -145,6 +146,7 @@ class GroupListView(generics.ListAPIView):
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = GroupListPagination
     filter_backends = [filters.SearchFilter]
     search_fields = ['group_name', 'description']
     

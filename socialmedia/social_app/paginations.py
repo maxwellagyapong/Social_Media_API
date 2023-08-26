@@ -14,3 +14,9 @@ class CommentListPagination(pagination.CursorPagination):
 class ReplyListPagination(pagination.CursorPagination):
     page_size = 3
     ordering = 'date_created'
+    
+    
+class GroupListPagination(pagination.LimitOffsetPagination):
+    default_limit = 10
+    max_limit = 20
+    offset_query_param = 'start'
