@@ -211,3 +211,12 @@ class SharedPostViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SharedPost.objects.all()
     serializer_class = SharedPostSerializer
     permission_classes = [IsAuthenticated]
+    
+    
+class LikeListView(generics.ListAPIView):
+    serializer_class = LikeSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Like.objects.filter(parent_post=pk)
