@@ -3,10 +3,11 @@ from .models import *
 
 class ReplySerializer(serializers.ModelSerializer):
     replier = serializers.StringRelatedField(read_only=True)
+    parent_comment = serializers.StringRelatedField(read_only=True)
     
     class Meta:
         model = Reply
-        exclude = ('parent_comment',)
+        fields = '__all__'
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -40,10 +41,11 @@ class UserPostSerializer(serializers.ModelSerializer):
         
 class GroupMemberSerializer(serializers.ModelSerializer):
     member = serializers.StringRelatedField(read_only=True)
+    parent_group = serializers.StringRelatedField(read_only=True)
     
     class Meta:
         model = GroupMember
-        exclude = ('parent_group',)
+        fields = '__all__'
         read_only_fields = ["is_group_admin"]
 
         

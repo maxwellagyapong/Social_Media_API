@@ -24,7 +24,7 @@ class Like(models.Model):
     parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE, related_name='likes')
     
     def __str__(self) -> str:
-        return self.liker.username + " | " + str(self.parent_post.content)
+        return self.liker.username 
     
     
 class Commment(models.Model):
@@ -35,7 +35,7 @@ class Commment(models.Model):
     replies_count = models.IntegerField(default=0)
     
     def __str__(self) -> str:
-        return str(self.pk) + " | " + self.commentor.username + " -> Post " + str(self.parent_post.pk)
+        return self.content 
     
     
 class Reply(models.Model):
@@ -48,7 +48,7 @@ class Reply(models.Model):
         verbose_name_plural = 'Replies'
     
     def __str__(self) -> str:
-        return str(self.pk) + " | " + self.replier.username + " -> Comment " + str(self.parent_comment.pk)
+        return self.content 
     
     
 class Follower(models.Model):
@@ -67,7 +67,7 @@ class Group(models.Model):
     member_count = models.IntegerField(default=0)
     
     def __str__(self) -> str:
-        return self.group_name + " | " + " | " + self.owner.username + " | " + str(self.member_count) + " Members"
+        return self.group_name + " | Members: " + str(self.member_count) 
     
     
 class GroupMember(models.Model):
@@ -81,7 +81,7 @@ class GroupMember(models.Model):
         verbose_name_plural = 'Group Members'
     
     def __str__(self) -> str:
-        return self.member.username + " -> Group " + self.parent_group.group_name + " | " + str(self.is_group_admin)
+        return self.member.username 
     
     
 class Notification(models.Model):
