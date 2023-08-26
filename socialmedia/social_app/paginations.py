@@ -9,3 +9,8 @@ class PostListPagination(pagination.PageNumberPagination):
 class CommentListPagination(pagination.CursorPagination):
     page_size = 3
     ordering = 'date_commented'
+    
+    
+class ReplyListPagination(pagination.CursorPagination):
+    page_size = 3
+    ordering = 'date_created'
