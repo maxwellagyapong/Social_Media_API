@@ -23,6 +23,9 @@ class Like(models.Model):
     liker = models.ForeignKey(User, on_delete=models.CASCADE)
     parent_post = models.ForeignKey(UserPost, on_delete=models.CASCADE, related_name='likes')
     
+    class Meta:
+        unique_together = ('liker', 'parent_post',)
+    
     def __str__(self) -> str:
         return self.liker.username 
     
@@ -55,6 +58,9 @@ class Follower(models.Model):
     parent_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
     follower = models.ForeignKey(User, on_delete=models.CASCADE)
     
+    class Meta:
+        unique_together = ('parent_user', 'follower',)
+    
     def __str__(self) -> str:
         return self.follower.username + " -> " + self.parent_user.username
     
@@ -77,6 +83,7 @@ class GroupMember(models.Model):
     is_group_admin = models.BooleanField(default=False)
     
     class Meta:
+        unique_together = ('member', 'parent_group',)
         verbose_name = 'Group Member'
         verbose_name_plural = 'Group Members'
     
