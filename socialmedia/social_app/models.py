@@ -16,7 +16,7 @@ class UserPost(models.Model):
         verbose_name_plural = "Posts"
     
     def __str__(self) -> str:
-        return self.post_owner.username + " | " + self.content + " |  Likes: " + str(self.likes_count) + " | Comments: " + str(self.comments_count)
+        return f"{self.post_owner.first_name} {self.post_owner.last_name} | {self.content} | Likes: {self.likes_count} | Comments:  {self.comments_count}"
  
 
 class Like(models.Model):
@@ -27,7 +27,7 @@ class Like(models.Model):
         unique_together = ('liker', 'parent_post',)
     
     def __str__(self) -> str:
-        return self.liker.username 
+        return f"{self.liker.first_name} {self.liker.last_name}"
     
     
 class Commment(models.Model):
@@ -62,7 +62,7 @@ class Follower(models.Model):
         unique_together = ('parent_user', 'follower',)
     
     def __str__(self) -> str:
-        return self.follower.username + " -> " + self.parent_user.username
+        return f"{self.follower.first_name} {self.follower.last_name} follows {self.parent_user.first_name} {self.parent_user.last_name}"
     
     
 class Group(models.Model):
@@ -88,7 +88,7 @@ class GroupMember(models.Model):
         verbose_name_plural = 'Group Members'
     
     def __str__(self) -> str:
-        return self.member.username 
+        return f"{self.member.first_name} {self.member.last_name}"
     
     
 class Notification(models.Model):
