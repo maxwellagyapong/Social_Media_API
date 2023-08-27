@@ -26,6 +26,14 @@ class UserLoginSerializer(serializers.ModelSerializer):
   
   
 class ProfilePictureSerializer(serializers.ModelSerializer):
+    
 	class Meta:
 		model = models.User
 		fields = ["profile_image"]
+  
+  
+class EditUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.User
+        fields = ["first_name", "last_name", "email", 'phone']

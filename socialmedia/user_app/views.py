@@ -115,7 +115,6 @@ class LogoutView(APIView):
   
   
 class EditProfilePicView(APIView):
-	serializer_class = ProfilePictureSerializer
 	permission_classes = [IsAuthenticated]
 
 	def put(self, request, pk, format=None):
@@ -145,3 +144,21 @@ class EditProfilePicView(APIView):
 		user.delete()
 		return Response({"Message": "Profile picture deleted successfuly!"}, 
 					status=status.HTTP_204_NO_CONTENT)
+  
+  
+class EditUser(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def put(self, request, pk):
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            user = None
+            if user == None:
+                return Response({"Error": "User not found!"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = EditUserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
