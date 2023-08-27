@@ -9,7 +9,7 @@ from rest_framework import viewsets
 from rest_framework import filters
 from .paginations import (PostListPagination, CommentListPagination, 
                           ReplyListPagination, GroupListPagination,
-                          LikeListPagination)
+                          LikeListPagination, UserListPagination)
 from user_app import models
 
 
@@ -230,6 +230,7 @@ class LikeListView(generics.ListAPIView):
 class UserListView(generics.ListAPIView):
     serializer_class = UserListSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = UserListPagination
     filter_backends = [filters.SearchFilter]
     search_fields = ['first_name', 'last_name']
     

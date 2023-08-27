@@ -24,5 +24,11 @@ class GroupListPagination(pagination.LimitOffsetPagination):
     
 class LikeListPagination(pagination.PageNumberPagination):
     page_size = 20
-    page_size_query_param = 30
+    page_size_query_param = 'size'
+    max_page_size = 30
+    
+    
+class UserListPagination(pagination.PageNumberPagination):
+    page_size = 15
+    page_size_query_param = 'size'
     max_page_size = 30
