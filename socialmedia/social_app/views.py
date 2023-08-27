@@ -213,6 +213,7 @@ class SharedPostViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SharedPost.objects.all()
     serializer_class = SharedPostSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = PostListPagination
     
     
 class LikeListView(generics.ListAPIView):
