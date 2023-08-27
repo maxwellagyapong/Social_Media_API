@@ -265,11 +265,12 @@ class FollowOrUnfollowView(generics.CreateAPIView):
         user_follow = Follower.objects.filter(parent_user=parent_user, follower=requested_user)
         
         if user_follow.exists():
-            user_follow.delete()
             parent_user.followers_count -= 1
-            return Response(f"You unfollowed {parent_user.first_name} {parent_user.second_name}")
+            requested_user.following_count -= 1
+            user_follow.delete()            
         else:
             parent_user.followers_count += 1
+            requested_user.following_count += 1
             NotificationService.follow_notification(user=parent_user)
             serializer.save(parent_user=parent_user, follower=requested_user)
             
@@ -295,8 +296,8 @@ class FollowingListView(generics.ListAPIView):
     
     
 class NotificationListView(generics.ListAPIView):
-    serializer_class = NotificationListSerializer
-    permission_classes = [IsAuthenticated]
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated] # TODO: IsOwner
     
     def get_queryset(self):
         pk = self.kwargs["pk"]
