@@ -225,8 +225,17 @@ class LikeListView(generics.ListAPIView):
         return Like.objects.filter(parent_post=pk)
     
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserListView(generics.ListAPIView):
     serializer_class = UserListSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        requested_user = self.request.user
+        return models.User.objects.exclude(pk=requested_user.pk)
+    
+    
+class UserDetailView(generics.RetrieveAPIView):
+    serializer_class = UserDetailSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
