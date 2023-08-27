@@ -34,7 +34,7 @@ class PostListView(generics.ListAPIView):
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserPost.objects.all()
-    serializer_class = UserPostSerializer
+    serializer_class = PostDetailSerializer
     permission_classes = [IsAuthenticated, IsPostOwnerOrReadOnly]
     
 

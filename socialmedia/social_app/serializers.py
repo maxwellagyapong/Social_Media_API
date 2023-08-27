@@ -31,6 +31,17 @@ class LikeSerializer(serializers.ModelSerializer):
 
 class UserPostSerializer(serializers.ModelSerializer):
     post_owner = serializers.StringRelatedField(read_only=True)
+    # comments = CommentSerializer(many=True, read_only=True)
+    # likes = LikeSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = UserPost
+        fields = '__all__'
+        read_only_fields = ["comments_count", "likes_count"]
+        
+        
+class PostDetailSerializer(serializers.ModelSerializer):
+    post_owner = serializers.StringRelatedField(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     # likes = LikeSerializer(many=True, read_only=True)
     
