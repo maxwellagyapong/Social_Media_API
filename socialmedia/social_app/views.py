@@ -226,7 +226,7 @@ class LikeListView(generics.ListAPIView):
     
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = UserSerializer
+    serializer_class = UserListSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
