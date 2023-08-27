@@ -254,7 +254,7 @@ class FollowOrUnfollowView(generics.CreateAPIView):
         pk = self.kwargs['pk']
         parent_user = models.User.objects.get(pk=pk)
         requested_user = self.request.user
-        user_follow = Like.objects.filter(parent_user=parent_user, follower=requested_user)
+        user_follow = Follower.objects.filter(parent_user=parent_user, follower=requested_user)
         
         if user_follow.exists():
             user_follow.delete()
