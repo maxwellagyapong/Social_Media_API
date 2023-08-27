@@ -70,7 +70,8 @@ python manage.py migrate
 * /api/home/comments/2/reply/ - reply to a comment
 * /api/home/comments/2/reply/ - return a list of all replies on a comment
 * /api/home/1/share/ - share a post
-* /api/home/shared-posts/ - returns all shared posts
+* /api/home/shared-posts/ - returns a list all shared posts
+* /api/home/users/7/notifications/ - returns a list of all user notifications
 * /api/home/create-group/ - create a group
 * /api/home/groups/1/ - returns a single group
 * /api/home/groups/1/ - edit group
