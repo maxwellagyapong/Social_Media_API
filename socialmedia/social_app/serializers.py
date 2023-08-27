@@ -106,4 +106,4 @@ class SharedPostSerializer(serializers.ModelSerializer):
 class UserListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.User 
-		exclude = ['password', 'username']
+		exclude = ['password', 'email']
