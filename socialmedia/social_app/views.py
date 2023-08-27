@@ -11,6 +11,7 @@ from .paginations import (PostListPagination, CommentListPagination,
                           ReplyListPagination, GroupListPagination,
                           LikeListPagination, UserListPagination, FollowerListPagination)
 from user_app import models
+from .services import NotificationService
 
 
 class CreatePostView(generics.CreateAPIView):
@@ -92,7 +93,8 @@ class ListandCreateCommentView(generics.ListCreateAPIView):
         post_item.comments_count += 1
         post_item.save()
         
-        # TODO: Notify post owner on new comment
+        # Notify post owner about new comment
+        NotificationService.comment_notification(user=post_item.post_owner)
         
         requested_user = self.request.user  
         
@@ -122,7 +124,8 @@ class ReplyToCommentsView(generics.ListCreateAPIView):
         
         request_user = self.request.user
         
-        # TODO: Notify commentor on new reply
+        # Notify comment owner on new reply
+        NotificationService.reply_notification(user=comment_item.commentor)
         
         serializer.save(parent_comment=comment_item, replier=request_user)
         
@@ -188,7 +191,6 @@ class JoinOrLeaveGroupView(generics.CreateAPIView):
             group.member_count += 1
             group.save()
             
-            # TODO: Notify group owner/group members on new member joined group.
             serializer.save(parent_group=group, member=requested_user)
             
 
@@ -201,7 +203,7 @@ class SharePostView(generics.CreateAPIView):
         pk = self.kwargs["pk"]
         try:
             original_post = UserPost.objects.get(pk=pk)
-        except Group.DoesNotExist:
+        except UserPost.DoesNotExist:
             original_post = None
             if original_post == None:
                 raise ValidationError({"Error": "You cannot share a non-existing post!"})
@@ -252,7 +254,13 @@ class FollowOrUnfollowView(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         pk = self.kwargs['pk']
-        parent_user = models.User.objects.get(pk=pk)
+        try:
+            parent_user = models.User.objects.get(pk=pk)
+        except models.User.DoesNotExist:
+            parent_user = None
+            if parent_user == None:
+                raise ValidationError({"Error": "You cannot follow a non-existing user!"})
+        
         requested_user = self.request.user
         user_follow = Follower.objects.filter(parent_user=parent_user, follower=requested_user)
         
@@ -262,6 +270,7 @@ class FollowOrUnfollowView(generics.CreateAPIView):
             return Response(f"You unfollowed {parent_user.first_name} {parent_user.second_name}")
         else:
             parent_user.followers_count += 1
+            NotificationService.follow_notification(user=parent_user)
             serializer.save(parent_user=parent_user, follower=requested_user)
             
             

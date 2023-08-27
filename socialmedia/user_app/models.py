@@ -46,7 +46,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
     followers_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)
-    profile_image = models.ImageField(upload_to='media/profile-pics')            
+    profile_image = models.ImageField(upload_to='media/profile-pics', blank=True, null=True)            
 
         
     # =====================================

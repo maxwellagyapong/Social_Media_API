@@ -69,6 +69,8 @@ python manage.py migrate
 * /api/home/1/comment/ - return a list all comments on a post 
 * /api/home/comments/2/reply/ - reply to a comment
 * /api/home/comments/2/reply/ - return a list of all replies on a comment
+* /api/home/1/share/ - share a post
+* /api/home/shared-posts/ - returns all shared posts
 * /api/home/create-group/ - create a group
 * /api/home/groups/1/ - returns a single group
 * /api/home/groups/1/ - edit group

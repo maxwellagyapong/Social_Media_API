@@ -94,12 +94,11 @@ class GroupMember(models.Model):
 class Notification(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     date_received = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(max_length=50)
-    content = models.TextField(max_length=150)
-    viewed = models.BooleanField(default=False)
+    message = models.TextField(max_length=100)
+    is_viewed = models.BooleanField(default=False)
     
     def __str__(self) -> str:
-        return self.title + " | " + str(self.date_received)
+        return self.message + " | " + str(self.date_received)
     
     
 class SharedPost(models.Model):

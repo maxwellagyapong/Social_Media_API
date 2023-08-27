@@ -8,7 +8,6 @@ from rest_framework.response import Response
 from django.contrib import auth
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
-# from .permissions import IsUserOrReadOnly
 
 User = get_user_model()
 
