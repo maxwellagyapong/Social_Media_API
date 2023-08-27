@@ -8,8 +8,7 @@ from rest_framework.response import Response
 from django.contrib import auth
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
-from .permissions import IsUserOrReadOnly
-from rest_framework.decorators import action
+# from .permissions import IsUserOrReadOnly
 
 User = get_user_model()
 
@@ -117,7 +116,7 @@ class LogoutView(APIView):
   
   
 class EditProfilePicView(APIView):
-	permission_classes = [IsAuthenticated, IsUserOrReadOnly]
+	permission_classes = [IsAuthenticated]
 
 	def put(self, request, pk, format=None):
 
