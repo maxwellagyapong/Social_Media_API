@@ -132,3 +132,10 @@ class UserDetailSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.User 
 		fields = ["first_name", "last_name", "followers_count", "following_count", 'profile_image']
+  
+  
+class NotificationListSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Notification
+        fields = ["message", "date_received"]

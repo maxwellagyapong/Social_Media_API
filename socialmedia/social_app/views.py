@@ -292,4 +292,13 @@ class FollowingListView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs["pk"]
         return Follower.objects.filter(follower=pk)
+    
+    
+class NotificationListView(generics.ListAPIView):
+    serializer_class = NotificationListSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        return Notification.objects.filter(owner=pk)
         
