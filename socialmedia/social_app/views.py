@@ -271,4 +271,13 @@ class FollowersListView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs["pk"]
         return Follower.objects.filter(parent_user=pk)
+    
+    
+class FollowingListView(generics.ListAPIView):
+    serializer_class = FollowerSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        return Follower.objects.filter(follwer=pk)
         
