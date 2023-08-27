@@ -9,6 +9,7 @@ from rest_framework import viewsets
 from rest_framework import filters
 from .paginations import (PostListPagination, CommentListPagination, 
                           ReplyListPagination, GroupListPagination)
+from user_app.serializers import UserSerializer
 
 class CreatePostView(generics.CreateAPIView):
     serializer_class = UserPostSerializer
