@@ -20,3 +20,9 @@ class GroupListPagination(pagination.LimitOffsetPagination):
     default_limit = 10
     max_limit = 20
     offset_query_param = 'start'
+    
+    
+class LikeListPagination(pagination.PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 30
+    max_page_size = 30

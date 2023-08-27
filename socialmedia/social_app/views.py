@@ -8,7 +8,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets
 from rest_framework import filters
 from .paginations import (PostListPagination, CommentListPagination, 
-                          ReplyListPagination, GroupListPagination)
+                          ReplyListPagination, GroupListPagination,
+                          LikeListPagination)
 from user_app import models
 
 
@@ -219,6 +220,7 @@ class SharedPostViewSet(viewsets.ReadOnlyModelViewSet):
 class LikeListView(generics.ListAPIView):
     serializer_class = LikeSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = LikeListPagination
     
     def get_queryset(self):
         pk = self.kwargs['pk']
