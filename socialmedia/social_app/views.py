@@ -228,6 +228,8 @@ class LikeListView(generics.ListAPIView):
 class UserListView(generics.ListAPIView):
     serializer_class = UserListSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name']
     
     def get_queryset(self):
         requested_user = self.request.user
