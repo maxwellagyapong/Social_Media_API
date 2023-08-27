@@ -9,7 +9,7 @@ from rest_framework import viewsets
 from rest_framework import filters
 from .paginations import (PostListPagination, CommentListPagination, 
                           ReplyListPagination, GroupListPagination,
-                          LikeListPagination, UserListPagination)
+                          LikeListPagination, UserListPagination, FollowerListPagination)
 from user_app import models
 
 
@@ -271,6 +271,7 @@ class FollowOrUnfollowView(generics.CreateAPIView):
 class FollowersListView(generics.ListAPIView):
     serializer_class = FollowerSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = FollowerListPagination
     
     def get_queryset(self):
         pk = self.kwargs["pk"]
@@ -280,6 +281,7 @@ class FollowersListView(generics.ListAPIView):
 class FollowingListView(generics.ListAPIView):
     serializer_class = FollowingSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = FollowerListPagination
     
     def get_queryset(self):
         pk = self.kwargs["pk"]
