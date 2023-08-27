@@ -40,12 +40,13 @@ class User(AbstractBaseUser):
     # =====================================
     # General fields
     # =====================================
-    first_name = models.CharField(max_length=20, null=True, blank=True)
+    first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=200)
     # userId = models.CharField(max_length=13, unique=True, blank=True, null=True)
     email = models.EmailField(unique=True)
     followers_count = models.IntegerField(default=0)
-    following_count = models.IntegerField(default=0)            
+    following_count = models.IntegerField(default=0)
+    profile_image = models.ImageField(upload_to='media/profile-pics')            
 
         
     # =====================================
