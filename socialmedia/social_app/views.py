@@ -240,12 +240,9 @@ class UserListView(generics.ListAPIView):
     
     
 class UserDetailView(generics.RetrieveAPIView):
+    queryset = models.User.objects.all()
     serializer_class = UserDetailSerializer
     permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        requested_user = self.request.user
-        return models.User.objects.exclude(pk=requested_user.pk)
     
     
 class FollowOrUnfollowView(generics.CreateAPIView):

@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from django.contrib import auth
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
+from .permissions import IsUserOrReadOnly
+from rest_framework.decorators import action
 
 User = get_user_model()
 
@@ -115,11 +117,9 @@ class LogoutView(APIView):
   
   
 class EditProfilePicView(APIView):
-	permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticated, IsUserOrReadOnly]
 
 	def put(self, request, pk, format=None):
-		data = ProfilePictureSerializer(data=request.data)
-		data.is_valid(raise_exception=True)
 
 		try:
 			user = User.objects.get(pk=pk)
@@ -127,12 +127,46 @@ class EditProfilePicView(APIView):
 			user = None
 			if user == None:
 				return Response({"Error": "User does not exist!"}, 
-					status=status.HTTP_404_NOT_FOUND)
-		user.profile_image = request.FILES["profile_image"]
-		user.save()
-		return Response({"Message": "Profile picture updated successfuly!"}, 
-					status=status.HTTP_204_NO_CONTENT)
+					status=status.HTTP_404_NOT_FOUND)    
+		serializer = ProfilePictureSerializer(user, data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+		else:
+			return Response(serializer.errors)
 
+	def delete(self, request, pk):
+    
+		try:
+			user = User.objects.get(pk=pk)
+		except User.DoesNotExist:
+			user = None
+			if user == None:
+				return Response({"Error": "User does not exist!"}, 
+					status=status.HTTP_404_NOT_FOUND)
+		user.profile_image = None
+		user.save()
+		return Response({"Message": "Profile picture deleted successfuly!"}, 
+					status=status.HTTP_204_NO_CONTENT)
+  
+  
+class EditUser(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def put(self, request, pk):
+		try:
+			user = User.objects.get(pk=pk)
+		except User.DoesNotExist:
+			user = None
+			if user == None:
+				return Response({"Error": "User not found!"}, status=status.HTTP_404_NOT_FOUND)
+		serializer = EditUserSerializer(user, data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+		else:
+			return Response(serializer.errors)
+		
 	def delete(self, request, pk):
 		try:
 			user = User.objects.get(pk=pk)
@@ -144,21 +178,3 @@ class EditProfilePicView(APIView):
 		user.delete()
 		return Response({"Message": "Profile picture deleted successfuly!"}, 
 					status=status.HTTP_204_NO_CONTENT)
-  
-  
-class EditUser(APIView):
-    permission_classes = [IsAuthenticated]
-    
-    def put(self, request, pk):
-        try:
-            user = User.objects.get(pk=pk)
-        except User.DoesNotExist:
-            user = None
-            if user == None:
-                return Response({"Error": "User not found!"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = EditUserSerializer(user, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
