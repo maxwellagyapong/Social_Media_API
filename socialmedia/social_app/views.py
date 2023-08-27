@@ -243,3 +243,23 @@ class UserDetailView(generics.RetrieveAPIView):
     def get_queryset(self):
         requested_user = self.request.user
         return models.User.objects.exclude(pk=requested_user.pk)
+    
+    
+class FollowOrUnfollowView(generics.CreateAPIView):
+    serializer_class = FollowerSerializer
+    queryset = Follower.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def perform_create(self, serializer):
+        pk = self.kwargs['pk']
+        parent_user = models.User.objects.get(pk=pk)
+        requested_user = self.request.user
+        user_follow = Like.objects.filter(parent_user=parent_user, follower=requested_user)
+        
+        if user_follow.exists():
+            user_follow.delete()
+            parent_user.followers_count -= 1
+            return Response(f"You unfollowed {parent_user.first_name} {parent_user.second_name}")
+        else:
+            parent_user.followers_count += 1
+            serializer.save(parent_user=parent_user, follower=requested_user)
