@@ -125,10 +125,10 @@ class SharedPostSerializer(serializers.ModelSerializer):
 class UserListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.User 
-		fields = ["first_name", "last_name"]
+		fields = ["first_name", "last_name", "profile_image"]
   
   
 class UserDetailSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.User 
-		fields = ["first_name", "last_name", "followers_count", "following_count"]
+		fields = ["first_name", "last_name", "followers_count", "following_count", 'profile_image']

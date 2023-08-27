@@ -112,3 +112,36 @@ class LogoutView(APIView):
 			"status":status.HTTP_200_OK,
 			"message":"Logged out"
 			}, status=status.HTTP_200_OK)
+  
+  
+class EditProfilePicView(APIView):
+	serializer_class = ProfilePictureSerializer
+	permission_classes = [IsAuthenticated]
+
+	def put(self, request, pk, format=None):
+		data = ProfilePictureSerializer(data=request.data)
+		data.is_valid(raise_exception=True)
+
+		try:
+			user = User.objects.get(pk=pk)
+		except User.DoesNotExist:
+			user = None
+			if user == None:
+				return Response({"Error": "User does not exist!"}, 
+					status=status.HTTP_404_NOT_FOUND)
+		user.profile_image = request.FILES["profile_image"]
+		user.save()
+		return Response({"Message": "Profile picture updated successfuly!"}, 
+					status=status.HTTP_204_NO_CONTENT)
+
+	def delete(self, request, pk):
+		try:
+			user = User.objects.get(pk=pk)
+		except User.DoesNotExist:
+			user = None
+			if user == None:
+				return Response({"Error": "User does not exist!"}, 
+					status=status.HTTP_404_NOT_FOUND)
+		user.delete()
+		return Response({"Message": "Profile picture deleted successfuly!"}, 
+					status=status.HTTP_204_NO_CONTENT)
