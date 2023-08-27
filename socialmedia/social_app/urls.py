@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register('shared-posts', SharedPostViewSet, basename='view-shared-posts')
+router.register('users', UserViewSet, basename='users')
 
 urlpatterns = [
     path('', PostListView.as_view(), name='home'),

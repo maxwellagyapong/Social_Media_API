@@ -10,6 +10,8 @@ from rest_framework import filters
 from .paginations import (PostListPagination, CommentListPagination, 
                           ReplyListPagination, GroupListPagination)
 from user_app.serializers import UserSerializer
+from user_app import models
+
 
 class CreatePostView(generics.CreateAPIView):
     serializer_class = UserPostSerializer
@@ -221,3 +223,12 @@ class LikeListView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs['pk']
         return Like.objects.filter(parent_post=pk)
+    
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        requested_user = self.request.user
+        return models.User.objects.exclude(pk=requested_user.pk)

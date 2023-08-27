@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from user_app import models
 
 class ReplySerializer(serializers.ModelSerializer):
     replier = serializers.StringRelatedField(read_only=True)
