@@ -9,7 +9,6 @@ from rest_framework import viewsets
 from rest_framework import filters
 from .paginations import (PostListPagination, CommentListPagination, 
                           ReplyListPagination, GroupListPagination)
-from user_app.serializers import UserSerializer
 from user_app import models
 
 
@@ -263,3 +262,13 @@ class FollowOrUnfollowView(generics.CreateAPIView):
         else:
             parent_user.followers_count += 1
             serializer.save(parent_user=parent_user, follower=requested_user)
+            
+            
+class FollowersListView(generics.ListAPIView):
+    serializer_class = FollowerSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        return Follower.objects.filter(parent_user=pk)
+        
