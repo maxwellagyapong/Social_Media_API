@@ -102,6 +102,12 @@ class FollowerSerializer(serializers.ModelSerializer):
         model = Follower
         exclude = ('parent_user',)
         
+class FollowingSerializer(serializers.ModelSerializer):
+    parent_user = serializers.StringRelatedField(read_only=True)
+    
+    class Meta:
+        model = Follower
+        
         
 class SharedPostSerializer(serializers.ModelSerializer):
     shared_by = serializers.StringRelatedField(read_only=True)
