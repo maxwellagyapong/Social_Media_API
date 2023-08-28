@@ -3,7 +3,7 @@ from rest_framework.views import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 from .models import *
-from .permissions import IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly
+from .permissions import IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly, IsNotificationOwner
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets
 from rest_framework import filters
@@ -301,7 +301,7 @@ class FollowingListView(generics.ListAPIView):
     
 class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
-    permission_classes = [IsAuthenticated] # TODO: You can only view your own notifications 
+    permission_classes = [IsNotificationOwner] 
     
     def get_queryset(self):
         pk = self.kwargs["pk"]
