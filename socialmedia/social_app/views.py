@@ -207,8 +207,10 @@ class SharePostView(generics.CreateAPIView):
             original_post = None
             if original_post == None:
                 raise ValidationError({"Error": "You cannot share a non-existing post!"})
-        shared_by = self.request.user
         
+        # Notify user of post share
+        NotificationService.share_notification(user=original_post.post_owner)
+        shared_by = self.request.user
         serializer.save(original_post=original_post, shared_by=shared_by)
         
         
@@ -250,7 +252,7 @@ class UserDetailView(generics.RetrieveAPIView):
 class FollowOrUnfollowView(generics.CreateAPIView):
     serializer_class = FollowerSerializer
     queryset = Follower.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated] # TODO: You cannnot follow/unfollow yourself
     
     def perform_create(self, serializer):
         pk = self.kwargs['pk']
@@ -262,8 +264,7 @@ class FollowOrUnfollowView(generics.CreateAPIView):
                 raise ValidationError({"Error": "You cannot follow a non-existing user!"})
         
         requested_user = self.request.user
-        user_follow = Follower.objects.filter(parent_user=parent_user, follower=requested_user)
-        
+        user_follow = Follower.objects.filter(parent_user=parent_user, follower=requested_user)       
         if user_follow.exists():
             parent_user.followers_count -= 1
             requested_user.following_count -= 1
@@ -297,7 +298,7 @@ class FollowingListView(generics.ListAPIView):
     
 class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
-    permission_classes = [IsAuthenticated] # TODO: IsOwner
+    permission_classes = [IsAuthenticated] # TODO: You can only view your own notifications 
     
     def get_queryset(self):
         pk = self.kwargs["pk"]

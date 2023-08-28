@@ -115,7 +115,7 @@ class LogoutView(APIView):
   
   
 class EditProfilePicView(APIView):
-	permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticated] # TODO: You can only edit/delete your own profile
 
 	def put(self, request, pk, format=None):
 
@@ -149,7 +149,7 @@ class EditProfilePicView(APIView):
   
   
 class EditUser(APIView):
-	permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticated] # TODO: You can only edit/delete your own profile
 
 	def put(self, request, pk):
 		try:

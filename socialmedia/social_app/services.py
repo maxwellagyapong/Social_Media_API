@@ -10,5 +10,9 @@ class NotificationService:
         return Notification.objects.create(message=message, owner=user)
     
     def follow_notification(user):
-        message = f"{user.first_name} {user.last_name} followed you!"
+        message = "You got a new follower!"
+        return Notification.objects.create(message=message, owner=user)
+    
+    def share_notification(user):
+        message = "Someone shared your post!"
         return Notification.objects.create(message=message, owner=user)
