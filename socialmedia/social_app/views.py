@@ -67,7 +67,6 @@ class LikeOrUnlikePostView(generics.CreateAPIView):
             post_item.likes_count += 1
             post_item.save()
             
-            # TODO: Notify post owner on like
             serializer.save(parent_post=post_item, liker=requested_user)
             
         
@@ -268,10 +267,14 @@ class FollowOrUnfollowView(generics.CreateAPIView):
         if user_follow.exists():
             parent_user.followers_count -= 1
             requested_user.following_count -= 1
+            parent_user.save()
+            requested_user.save()
             user_follow.delete()            
         else:
             parent_user.followers_count += 1
             requested_user.following_count += 1
+            parent_user.save()
+            requested_user.save()
             NotificationService.follow_notification(user=parent_user)
             serializer.save(parent_user=parent_user, follower=requested_user)
             
