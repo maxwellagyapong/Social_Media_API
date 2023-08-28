@@ -17,3 +17,20 @@ class RegisterTestCase(APITestCase):
         
         response = self.client.post(reverse('register'), data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        
+class LoginTestCase(APITestCase):
+    
+    def setUp(self):
+        self.user = User.objects.create_user(email="test@gmail.com", first_name="test",
+                                        last_name="case", password="Password@123",)
+    
+    def test_login(self):
+        
+        data = {
+            "email": "test@gmail.com",
+            "password": "Password@123"
+        }
+        
+        response = self.client.post(reverse("login"), data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
