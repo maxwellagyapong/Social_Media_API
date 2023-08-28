@@ -60,33 +60,33 @@ python manage.py migrate
 ## App Endpoints
 * /api/post/ - create a post
 * /api/home/ - return the list of all posts
-* /api/home/<int:pk>/ - return a single post
-* /api/home/<int:pk>/ - update a post
-* /api/home/<int:pk>/ - delete a post
-* /api/home/<int:pk>/like/ - like or unlike post
-* /api/home/4/likers/ - returns all likers of a post
-* /api/home/1/comment/ - comment on a post
-* /api/home/1/comment/ - return a list all comments on a post 
-* /api/home/comments/2/reply/ - reply to a comment
-* /api/home/comments/2/reply/ - return a list of all replies on a comment
-* /api/home/1/share/ - share a post
+* /api/home/{post_id}/ - return a single post
+* /api/home/{post_id}/ - update a post
+* /api/home/{post_id}/ - delete a post
+* /api/home/{post_id}/like/ - like or unlike post
+* /api/home/{post_id}/likers/ - returns all likers of a post
+* /api/home/{post_id}/comment/ - comment on a post
+* /api/home/{post_id}/comment/ - return a list all comments on a post 
+* /api/home/comments/{comment_id}/reply/ - reply to a comment
+* /api/home/comments/{comment_id}/reply/ - return a list of all replies on a comment
+* /api/home/{post_id}/share/ - share a post
 * /api/home/shared-posts/ - returns a list all shared posts
-* /api/home/users/7/notifications/ - returns a list of all user notifications
+* /api/home/users/{user_id}/notifications/ - returns a list of all user notifications
 * /api/home/create-group/ - create a group
-* /api/home/groups/1/ - returns a single group
-* /api/home/groups/1/ - edit group
-* /api/home/groups/1/ - delete group
 * /api/home/groups/ - returns a list of all groups
-* /api/home/groups/1/join/ - join or leave a group
+* /api/home/groups/{group_id}/ - returns a single group
+* /api/home/groups/{group_id}/ - edit group
+* /api/home/groups/{group_id}/ - delete group
+* /api/home/groups/{group_id}/join/ - join or leave a group
 * /api/home/users/ - returns a list of all registered users
-* /api/home/users/2/ - returns a single user
-* /api/account/3/profile-pic/ - edit profile picture
-* /api/account/3/profile-pic/ - remove profile picture
-* /api/account/2/edit-profile/ - edit user profile
-* /api/account/2/edit-profile/ - delete user account
-* /api/home/users/1/follow/ - follow or unfollow a user
-* /api/home/users/1/followers/ - returns a list of all user followers
-* /api/home/users/1/following/ - returns a list of all user following
+* /api/home/users/{user_id}/ - returns a single user
+* /api/account/{user_id}/edit-profile/ - edit user profile
+* /api/account/{user_id}/edit-profile/ - delete user account
+* /api/account/{user_id}/profile-pic/ - edit profile picture
+* /api/account/{user_id}/profile-pic/ - remove/delete profile picture
+* /api/home/users/{user_id}/follow/ - follow or unfollow a user
+* /api/home/users/{user_id}/followers/ - returns a list of all user followers
+* /api/home/users/{user_id}/following/ - returns a list of all user following
 * /api/account/register/ - register a new user account
 * /api/account/login/ - login to an existing user account
 * /api/account/logout/ - logout
