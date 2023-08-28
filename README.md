@@ -94,7 +94,7 @@ python manage.py migrate
 ## Public Repo
 * [Follow this link](https://github.com/maxwellagyapong/Social_Media_API)
 
-## API Documentation
+## API Documentation/Playground
 ```
-https://documenter.getpostman.com/view/20490236/2s9XxzuCTy
+http://127.0.0.1:8000/api/doc 
 ```
