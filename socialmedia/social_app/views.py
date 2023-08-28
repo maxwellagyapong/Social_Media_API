@@ -252,7 +252,7 @@ class UserDetailView(generics.RetrieveAPIView):
 class FollowOrUnfollowView(generics.CreateAPIView):
     serializer_class = FollowerSerializer
     queryset = Follower.objects.all()
-    permission_classes = [IsNotSameUser] # TODO: You cannnot follow/unfollow yourself
+    permission_classes = [IsNotSameUser] 
     
     def perform_create(self, serializer):
         pk = self.kwargs['pk']
