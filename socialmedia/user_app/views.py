@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.contrib import auth
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
+from .permissions import IsOwner
 
 User = get_user_model()
 
@@ -115,7 +116,7 @@ class LogoutView(APIView):
   
   
 class EditProfilePicView(APIView):
-	permission_classes = [IsAuthenticated] 
+	permission_classes = [IsOwner] 
 
 	def put(self, request, pk, format=None):
 		try:
@@ -125,10 +126,6 @@ class EditProfilePicView(APIView):
 			if user == None:
 				return Response({"Error": "User does not exist!"}, 
 					status=status.HTTP_404_NOT_FOUND)
-    
-		if request.user != user:
-			return Response("Failed: You do not have permission to do this.", 
-                   status=status.HTTP_401_UNAUTHORIZED)
    
 		serializer = ProfilePictureSerializer(user, data=request.data)
 		if serializer.is_valid():
@@ -146,10 +143,6 @@ class EditProfilePicView(APIView):
 			if user == None:
 				return Response({"Error": "User does not exist!"}, 
 					status=status.HTTP_404_NOT_FOUND)
-    
-		if request.user != user:
-			return Response("Failed: You do not have permission to do this.", 
-                   status=status.HTTP_401_UNAUTHORIZED)
    
 		user.profile_image = None
 		user.save()
@@ -157,8 +150,8 @@ class EditProfilePicView(APIView):
 					status=status.HTTP_204_NO_CONTENT)
   
   
-class EditUser(APIView): # Use generics.RetrieveUpdateDelete
-	permission_classes = [IsAuthenticated] 
+class EditUser(APIView): # Use generics.RetrieveUpdateDelete so I can have Patch
+	permission_classes = [IsOwner] 
 
 	def put(self, request, pk):
 		try:
@@ -168,10 +161,6 @@ class EditUser(APIView): # Use generics.RetrieveUpdateDelete
 			if user == None:
 				return Response({"Error": "User not found!"}, 
                     status=status.HTTP_404_NOT_FOUND)
-    
-		if request.user != user:
-			return Response("Failed: You do not have permission to do this.",
-                   status=status.HTTP_401_UNAUTHORIZED)
  
 		serializer = EditUserSerializer(user, data=request.data)
 		if serializer.is_valid():
@@ -188,10 +177,6 @@ class EditUser(APIView): # Use generics.RetrieveUpdateDelete
 			if user == None:
 				return Response({"Error": "User does not exist!"}, 
 					status=status.HTTP_404_NOT_FOUND)
-
-		if request.user != user:
-			return Response("Failed: You do not have permission to do this.",
-                   status=status.HTTP_401_UNAUTHORIZED)
    
 		user.delete()
 		return Response({"Message": "Profile picture deleted successfuly!"}, 
