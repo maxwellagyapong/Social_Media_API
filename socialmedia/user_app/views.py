@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.contrib import auth
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
+from rest_framework import mixins
 from .permissions import IsOwner
 
 User = get_user_model()
@@ -113,6 +114,15 @@ class LogoutView(APIView):
 			"status":status.HTTP_200_OK,
 			"message":"Logged out"
 			}, status=status.HTTP_200_OK)
+
+
+class EditUserView(generics.UpdateAPIView, mixins.DestroyModelMixin):
+	serializer_class = EditUserSerializer
+	queryset = User.objects.all() 
+	permission_classes = [IsOwner] 
+
+	def delete(self, request, *args, **kwargs):
+		return self.destroy(request, *args, **kwargs)
   
   
 class EditProfilePicView(APIView):
@@ -146,38 +156,5 @@ class EditProfilePicView(APIView):
    
 		user.profile_image = None
 		user.save()
-		return Response({"Message": "Profile picture deleted successfuly!"}, 
-					status=status.HTTP_204_NO_CONTENT)
-  
-  
-class EditUser(APIView): # Use generics.RetrieveUpdateDelete so I can have Patch
-	permission_classes = [IsOwner] 
-
-	def put(self, request, pk):
-		try:
-			user = User.objects.get(pk=pk)
-		except User.DoesNotExist:
-			user = None
-			if user == None:
-				return Response({"Error": "User not found!"}, 
-                    status=status.HTTP_404_NOT_FOUND)
- 
-		serializer = EditUserSerializer(user, data=request.data)
-		if serializer.is_valid():
-			serializer.save()
-			return Response(serializer.data)
-		else:
-			return Response(serializer.errors)
-		
-	def delete(self, request, pk):
-		try:
-			user = User.objects.get(pk=pk)
-		except User.DoesNotExist:
-			user = None
-			if user == None:
-				return Response({"Error": "User does not exist!"}, 
-					status=status.HTTP_404_NOT_FOUND)
-   
-		user.delete()
 		return Response({"Message": "Profile picture deleted successfuly!"}, 
 					status=status.HTTP_204_NO_CONTENT)
