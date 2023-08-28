@@ -60,7 +60,7 @@ python manage.py migrate
 ## App Endpoints
 * /api/post/ - create a post
 * /api/home/ - return the list of all posts
-* /api/home/popular - return popular posts
+* /api/home/popular/ - return popular posts
 * /api/home/{post_id}/ - return a single post
 * /api/home/{post_id}/ - update a post
 * /api/home/{post_id}/ - delete a post
