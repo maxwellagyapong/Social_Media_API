@@ -7,6 +7,7 @@ router.register('shared-posts', SharedPostViewSet, basename='view-shared-posts')
 
 urlpatterns = [
     path('', PostListView.as_view(), name='home'),
+    path('popular/', PopularPostsView.as_view(), name='popular-posts'),
     path('post/', CreatePostView.as_view(), name='create-post'),
     path('<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('<int:pk>/like/', LikeOrUnlikePostView.as_view(), name='like-or-unlike-post'),

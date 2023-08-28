@@ -13,6 +13,7 @@ from .paginations import (PostListPagination, CommentListPagination,
                           LikeListPagination, UserListPagination, FollowerListPagination)
 from user_app import models
 from .services import NotificationService
+from django.db.models import F
 
 
 class CreatePostView(generics.CreateAPIView):
@@ -32,6 +33,14 @@ class PostListView(generics.ListAPIView):
     pagination_class = PostListPagination
     filter_backends = [filters.SearchFilter]
     search_fields = ['post_owner__username', 'content']
+    
+
+# My idea is that popular posts are those with the most likes and comments together.   
+class PopularPostsView(generics.ListAPIView):
+    queryset = UserPost.objects.annotate(total_likes_and_comments=F('likes_count') + F('comments_count')).order_by('-total_likes_and_comments')
+    serializer_class = UserPostSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = PostListPagination   
     
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
