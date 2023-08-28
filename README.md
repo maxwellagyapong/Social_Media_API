@@ -1,5 +1,5 @@
 # Social Media API Project
-Django Social Media Application (API)
+Django Social Media API
 
 ## Table of contents
 * [General info](#general-info)
