@@ -57,6 +57,46 @@ class LogoutTestCase(APITestCase):
     def test_logout_authorized(self):
         self.response_body = self.response.json()
         self.token = self.response_body['token']
-        self.client.credentials(HTTP_AUTHORIZATION='Token '+self.token)
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer '+self.token)
         response = self.client.get(reverse("logout"))
-        pass
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    
+class EditUserProfileTestCase(APITestCase):
+    
+    def setUp(self):
+        self.user = User.objects.create_user(email="test@gmail.com", first_name="test",
+                                        last_name="case", password="Password@123",)
+        
+        data = {
+            "email": "test@gmail.com",
+            "password": "Password@123"
+        }
+        
+        self.response = self.client.post(reverse("login"), data)
+        
+    def test_edit_user_unauthorized(self):
+        
+        data = {
+            "first_name": "updated",
+            "last_name": "case",
+            "email": "updated@gmail.com"
+        }
+                           
+        response = self.client.put(reverse("edit-profile", args=[self.user.pk]), data)       
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+    def test_edit_user_authorized(self):
+        
+        self.response_body = self.response.json()
+        self.token = self.response_body['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer '+self.token)
+        
+        data = {
+            "first_name": "updated",
+            "last_name": "case",
+            "email": "updated@gmail.com"
+        }
+             
+        response = self.client.put(reverse("edit-profile", args=[self.user.pk]), data)       
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
