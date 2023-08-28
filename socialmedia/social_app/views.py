@@ -208,7 +208,7 @@ class SharePostView(generics.CreateAPIView):
             if original_post == None:
                 raise ValidationError({"Error": "You cannot share a non-existing post!"})
         
-        # Notify user of post share
+        # Notify post owner about share
         NotificationService.share_notification(user=original_post.post_owner)
         shared_by = self.request.user
         serializer.save(original_post=original_post, shared_by=shared_by)
