@@ -115,17 +115,21 @@ class LogoutView(APIView):
   
   
 class EditProfilePicView(APIView):
-	permission_classes = [IsAuthenticated] # TODO: You can only edit/delete your own profile
+	permission_classes = [IsAuthenticated] 
 
 	def put(self, request, pk, format=None):
-
 		try:
 			user = User.objects.get(pk=pk)
 		except User.DoesNotExist:
 			user = None
 			if user == None:
 				return Response({"Error": "User does not exist!"}, 
-					status=status.HTTP_404_NOT_FOUND)    
+					status=status.HTTP_404_NOT_FOUND)
+    
+		if request.user != user:
+			return Response("Failed: You do not have permission to do this.", 
+                   status=status.HTTP_401_UNAUTHORIZED)
+   
 		serializer = ProfilePictureSerializer(user, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
@@ -142,14 +146,19 @@ class EditProfilePicView(APIView):
 			if user == None:
 				return Response({"Error": "User does not exist!"}, 
 					status=status.HTTP_404_NOT_FOUND)
+    
+		if request.user != user:
+			return Response("Failed: You do not have permission to do this.", 
+                   status=status.HTTP_401_UNAUTHORIZED)
+   
 		user.profile_image = None
 		user.save()
 		return Response({"Message": "Profile picture deleted successfuly!"}, 
 					status=status.HTTP_204_NO_CONTENT)
   
   
-class EditUser(APIView):
-	permission_classes = [IsAuthenticated] # TODO: You can only edit/delete your own profile
+class EditUser(APIView): # Use generics.RetrieveUpdateDelete
+	permission_classes = [IsAuthenticated] 
 
 	def put(self, request, pk):
 		try:
@@ -157,7 +166,13 @@ class EditUser(APIView):
 		except User.DoesNotExist:
 			user = None
 			if user == None:
-				return Response({"Error": "User not found!"}, status=status.HTTP_404_NOT_FOUND)
+				return Response({"Error": "User not found!"}, 
+                    status=status.HTTP_404_NOT_FOUND)
+    
+		if request.user != user:
+			return Response("Failed: You do not have permission to do this.",
+                   status=status.HTTP_401_UNAUTHORIZED)
+ 
 		serializer = EditUserSerializer(user, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
@@ -173,6 +188,11 @@ class EditUser(APIView):
 			if user == None:
 				return Response({"Error": "User does not exist!"}, 
 					status=status.HTTP_404_NOT_FOUND)
+
+		if request.user != user:
+			return Response("Failed: You do not have permission to do this.",
+                   status=status.HTTP_401_UNAUTHORIZED)
+   
 		user.delete()
 		return Response({"Message": "Profile picture deleted successfuly!"}, 
 					status=status.HTTP_204_NO_CONTENT)
