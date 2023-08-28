@@ -101,6 +101,25 @@ class EditUserProfileTestCase(APITestCase):
         response = self.client.put(reverse("edit-profile", args=[self.user.pk]), data)       
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
+    def test_edit_user_not_permitted(self):
+        
+        another_user = User.objects.create_user(email="another@gmail.com", first_name="new",
+                                        last_name="case", password="Password@123",)
+        
+        
+        self.response_body = self.response.json()
+        self.token = self.response_body['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer '+self.token)
+        
+        data = {
+            "first_name": "updated",
+            "last_name": "case",
+            "email": "updated@gmail.com"
+        }
+      
+        response = self.client.put(reverse("edit-profile", args=[another_user.pk]), data)       
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)       
+        
         
 class EditProfilePicTestCase(APITestCase):
     
@@ -136,5 +155,22 @@ class EditProfilePicTestCase(APITestCase):
              
         response = self.client.put(reverse("profile-pic-edit", args=[self.user.pk]), data)       
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_profile_pic_not_permitted(self):
+        
+        another_user = User.objects.create_user(email="another@gmail.com", first_name="new",
+                                        last_name="case", password="Password@123",)
+        
+        
+        self.response_body = self.response.json()
+        self.token = self.response_body['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer '+self.token)
+        
+        data = {
+            "profile_image": "http://127.0.0.1:8000/media/profile-pics/Screenshot_19_V6S5AKw.png"
+        }
+      
+        response = self.client.put(reverse("profile-pic-edit", args=[another_user.pk]), data)       
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN) 
         
         
