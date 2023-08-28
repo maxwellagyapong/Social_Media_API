@@ -58,4 +58,5 @@ class LogoutTestCase(APITestCase):
         self.response_body = self.response.json()
         self.token = self.response_body['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token '+self.token)
+        response = self.client.get(reverse("logout"))
         pass
