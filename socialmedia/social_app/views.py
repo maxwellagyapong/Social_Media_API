@@ -37,7 +37,8 @@ class PostListView(generics.ListAPIView):
 
 # My idea is that popular posts are those with the most likes and comments together.   
 class PopularPostsView(generics.ListAPIView):
-    queryset = UserPost.objects.annotate(total_likes_and_comments=F('likes_count') + F('comments_count')).order_by('-total_likes_and_comments')
+    queryset = UserPost.objects.annotate(total_likes_and_comments=F('likes_count') + 
+                                         F('comments_count')).order_by('-total_likes_and_comments')
     serializer_class = UserPostSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = PostListPagination   
