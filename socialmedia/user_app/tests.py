@@ -100,3 +100,41 @@ class EditUserProfileTestCase(APITestCase):
              
         response = self.client.put(reverse("edit-profile", args=[self.user.pk]), data)       
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        
+class EditProfilePicTestCase(APITestCase):
+    
+    def setUp(self):
+        self.user = User.objects.create_user(email="test@gmail.com", first_name="test",
+                                        last_name="case", password="Password@123",)
+        
+        data = {
+            "email": "test@gmail.com",
+            "password": "Password@123"
+        }
+        
+        self.response = self.client.post(reverse("login"), data)
+        
+    def test_edit_profile_pic_unauthorized(self):
+        
+        data = {
+            "profile_image": "http://127.0.0.1:8000/media/profile-pics/Screenshot_19_V6S5AKw.png"
+        }
+                           
+        response = self.client.put(reverse("profile-pic-edit", args=[self.user.pk]), data)       
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+    def test_profile_pic_authorized(self):
+        
+        self.response_body = self.response.json()
+        self.token = self.response_body['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer '+self.token)
+        
+        data = {
+            "profile_image": "http://127.0.0.1:8000/media/profile-pics/Screenshot_19_V6S5AKw.png"
+        }
+             
+        response = self.client.put(reverse("profile-pic-edit", args=[self.user.pk]), data)       
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        
