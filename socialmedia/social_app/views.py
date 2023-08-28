@@ -3,7 +3,8 @@ from rest_framework.views import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 from .models import *
-from .permissions import IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly, IsNotificationOwner
+from .permissions import (IsPostOwnerOrReadOnly, IsGroupOwnerOrReadOnly, 
+                          IsNotificationOwner, IsNotSameUser)
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets
 from rest_framework import filters
@@ -251,7 +252,7 @@ class UserDetailView(generics.RetrieveAPIView):
 class FollowOrUnfollowView(generics.CreateAPIView):
     serializer_class = FollowerSerializer
     queryset = Follower.objects.all()
-    permission_classes = [IsAuthenticated] # TODO: You cannnot follow/unfollow yourself
+    permission_classes = [IsNotSameUser] # TODO: You cannnot follow/unfollow yourself
     
     def perform_create(self, serializer):
         pk = self.kwargs['pk']
