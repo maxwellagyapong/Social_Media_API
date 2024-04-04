@@ -68,6 +68,10 @@ python manage.py makemigrations
 python manage.py migrate
 
 ```
+* Run Django Server with
+```
+python manage.py runserver
+```
 
 ## App Endpoints
 * /api/post/ - create a post
