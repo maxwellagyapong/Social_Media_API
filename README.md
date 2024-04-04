@@ -31,25 +31,37 @@ Simple django application with the following as main features:
 * Django Rest Framework
 * Docker
 
-### Setup
-## Installation on Linux and Mac OS
+## Setup
+### Running locally on Windows, Linux or Mac OS with Docker
 * [Follow the guide here](https://help.github.com/articles/fork-a-repo) on how to clone or fork a repo
 * [Follow the guide here](https://docs.docker.com/engine/install/) on how to install and run docker
 * To run application with docker
 ```
 docker-compose up --build
 ```
-  
-* Copy the IP address provided once your server has completed building the site. (It will say something like >> Serving at http://0.0.0.0:8000).
-* Open the address in the browser
+* OR
+```
+docker build -t appname .
+docker-compose up -d
+```
 
-## Commands
-Open docker bash with 
+### Running locally on Windows, Linux or Mac OS without Docker"
+* Create a virtual environment with the following commond:
 ```
-docker ps
-docker exec -it <CONTAINER_NAME> bash
+python3 -m virtualenv venv
 ```
-In our case, default container name is "socialmedia_app"
+* For Linux and Mac, activate virtual environment with the following commad:
+```
+source venv/bin/activate
+```
+* For Windows, activate virtual environment with the following command:
+```
+source venv/Scripts/activate
+```
+* Install Project Dependencies
+```
+pip install -r requirements.txt
+```
 * To run migrations
 ```
 python manage.py makemigrations
