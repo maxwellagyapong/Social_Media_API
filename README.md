@@ -72,6 +72,11 @@ python manage.py migrate
 ```
 python manage.py runserver
 ```
+* To run tests:
+```
+python manage.py test
+```
+
 
 ## App Endpoints
 * /api/post/ - create a post
